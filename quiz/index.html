@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Quién ataca? | Invisibles y hambrientos</title>
+<meta name="description" content="Juego con fotos de síntomas. Elegí qué patógeno de las hortalizas es cada uno y leé por qué.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="../img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.marcador { display: flex; justify-content: space-between; align-items: center; font-family: var(--titulos); font-weight: 650; margin: 6px 0 10px; }
+.marcador .puntos { color: var(--verde-hondo); }
+.avance { height: 6px; background: var(--linea); border-radius: 99px; overflow: hidden; margin-bottom: 16px; }
+.avance i { display: block; height: 100%; background: var(--verde); width: 0; transition: width .3s; }
+.foto { background: #E4E9E2; border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3; display: grid; place-items: center; }
+.foto img { width: 100%; height: 100%; object-fit: contain; }
+.pregunta { font-size: 1.35rem; margin: 18px 0 12px; }
+.respuestas { display: grid; gap: 10px; }
+.respuestas button {
+  min-height: 54px; text-align: left; padding: .6em 1em; border-radius: 14px; cursor: pointer;
+  border: 2px solid var(--linea); background: var(--papel); color: var(--carbon);
+  font-family: var(--titulos); font-weight: 650; font-size: 1.05rem; display: flex; justify-content: space-between; gap: 10px; align-items: center;
+}
+.respuestas button:hover:not([disabled]) { border-color: var(--verde); }
+.respuestas button[disabled] { cursor: default; }
+.respuestas button.bien { border-color: var(--verde); background: var(--verde-claro); color: var(--verde-hondo); }
+.respuestas button.mal { border-color: var(--terra); background: var(--terra-claro); color: var(--terra-texto); }
+.respuestas button.apagada { opacity: .55; }
+.explica { background: var(--papel); border: 1px solid var(--linea); border-radius: 14px; padding: 14px 16px 6px; margin-top: 14px; }
+.explica h3 { margin-bottom: .3rem; }
+.explica h3 em { font-family: var(--texto); font-weight: 400; font-stretch: normal; }
+.explica p { font-size: 1.02rem; }
+.siguiente { margin: 16px 0 0; }
+.final { text-align: left; padding: 10px 0; }
+.final .grande { font-family: var(--titulos); font-weight: 800; font-stretch: 72%; font-size: clamp(3.4rem, 18vw, 5.6rem); line-height: .95; color: var(--verde-hondo); }
+.repaso { list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: 10px; }
+.repaso li { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; font-size: 1rem; }
+.repaso .lupa { width: 56px; height: 56px; }
+@media (min-width: 860px) {
+  .juego { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: start; }
+  .pregunta { margin-top: 0; }
+}
+</style>
+</head>
+<body>
+<header class="tope"><a class="volver" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a><span class="marca">Invisibles y hambrientos</span></header>
+<main id="contenido">
+
+
+<div class="envoltura ancha">
+  <header class="cabeza">
+    <span class="pagina">Página 7 del informe</span>
+    <h1>¿Quién ataca?</h1>
+    <p class="bajada">Doce fotos de síntomas sacadas de los quince expedientes del informe. Elegí qué patógeno es y mirá por qué.</p>
+  </header>
+  <div id="quiz" aria-live="polite"></div>
+</div>
+
+<script>
+(function () {
+  var RAIZ = "../";
+  var N = 12;
+  var P = [
+    { n: "Tizón tardío", c: "Phytophthora infestans", f: "foto-phytophthora-infestans.jpg", alt: "Hoja de tomate con manchas pardas de borde difuso",
+      e: "Manchas aceitosas que crecen rápido y se vuelven pardo púrpura, con moho blanco en el envés.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup> Lo favorecen menos de 18 °C y agua sobre las hojas, en otoño e invierno.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>" },
+    { n: "Moho gris", c: "Botrytis cinerea", f: "foto-botrytis-cinerea.jpg", alt: "Tallo de tomate cubierto por un moho gris aterciopelado",
+      e: "Tejido blando y marrón claro que se cubre de un moho gris aterciopelado.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup> Necesita más de 90 % de humedad, como la del invernáculo cerrado de noche.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>" },
+    { n: "Oídio", c: "Leveillula taurica", f: "foto-leveillula-taurica.jpg", alt: "Hoja de morrón con manchas amarillas difusas",
+      e: "Polvillo blanco en el envés y una mancha amarilla difusa arriba. Después caen las hojas.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup> En Salto y Bella Unión ataca al morrón de invernáculo de mayo a noviembre.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>" },
+    { n: "Mildiu de las cucurbitáceas", c: "Pseudoperonospora cubensis", f: "foto-pseudoperonospora-cubensis.jpg", alt: "Hoja de pepino con un mosaico de manchas amarillas angulares",
+      e: "Manchas amarillas y angulares entre las nervaduras. Con humedad aparece un moho grisáceo a violáceo en el envés.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a></sup> Le alcanzan 2 horas de hoja mojada a 15 °C para infectar.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>" },
+    { n: "Mildiu de la lechuga", c: "Bremia lactucae", f: "foto-bremia-lactucae.jpg", alt: "Hoja de lechuga con manchas amarillas arriba y pelusa blanca abajo",
+      e: "Manchas amarillas arriba y, en 24 a 48 horas, pelusa blanca en el envés.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup> Lo favorecen noches frescas con 5 a 7 horas de hoja mojada.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup>" },
+    { n: "Mildiu de la cebolla", c: "Peronospora destructor", f: "foto-peronospora-destructor.jpg", alt: "Hoja de cebolla pálida cubierta por una felpa grisácea",
+      e: "Manchas alargadas y pálidas con una felpa violácea. Las hojas se secan y se doblan.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a></sup> No necesita lluvia, le alcanza con un rocío que dura.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a></sup>" },
+    { n: "Moho blanco", c: "Sclerotinia", f: "foto-sclerotinia.jpg", alt: "Base de una lechuga caída, con el cuello podrido y bolitas negras",
+      e: "Podredumbre acuosa con un algodón blanco de hongo y bolitas negras, los esclerocios. La lechuga se desploma.<sup class='r'><a href='#f10' aria-label='Fuente 10'>10</a></sup> Los esclerocios siguen infectivos hasta 5 años en el suelo.<sup class='r'><a href='#f10' aria-label='Fuente 10'>10</a></sup>" },
+    { n: "Phytophthora del morrón", c: "Phytophthora capsici", f: "foto-phytophthora-capsici.jpg", alt: "Fila de morrones marchitos al lado de plantas sanas",
+      e: "Los morrones se marchitan siguiendo las líneas de riego y los canteros húmedos.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup> Le gusta el calor, de 27 a 32 °C, con agua en el cantero.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup>" },
+    { n: "Fusarium", c: "Fusarium oxysporum", f: "foto-fusarium-oxysporum.jpg", alt: "Planta de tomate marchita con el tallo pardo",
+      e: "Hojas amarillas y marchitas, a veces de un solo lado, y los vasos del tallo marrones.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a></sup> En el norte dejó de ser problema gracias a las variedades resistentes.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>" },
+    { n: "Cancro bacteriano", c: "Clavibacter michiganensis", f: "foto-clavibacter-michiganensis.jpg", alt: "Tomate verde con manchas de centro oscuro y halo blanco",
+      e: "Frutos con manchas de ojo de pájaro, un centro oscuro con un halo blanco.<sup class='r'><a href='#f13' aria-label='Fuente 13'>13</a></sup> Alcanza una semilla infectada cada 10.000 para empezar una epidemia.<sup class='r'><a href='#f13' aria-label='Fuente 13'>13</a></sup>" },
+    { n: "Mancha bacteriana", c: "Xanthomonas", f: "foto-xanthomonas.jpg", alt: "Tomate verde con pequeñas manchas costrosas",
+      e: "Manchas en hojas y frutos, y caen flores y frutos chicos.<sup class='r'><a href='#f13' aria-label='Fuente 13'>13</a></sup> Es el principal problema del tomate en años lluviosos y cálidos.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup>" },
+    { n: "Peste negra", c: "TSWV", f: "foto-tswv.jpg", alt: "Tomates con anillos amarillos concéntricos",
+      e: "Anillos en los frutos maduros y hojas jóvenes bronceadas.<sup class='r'><a href='#f15' aria-label='Fuente 15'>15</a></sup> La causa un virus que lleva el trips.<sup class='r'><a href='#f16' aria-label='Fuente 16'>16</a></sup>" },
+    { n: "Virosis de cucurbitáceas", c: "ZYMV y otros virus", f: "foto-zymv.jpg", alt: "Zapallitos deformados con mosaico amarillo",
+      e: "Mosaico verde y amarillo, hojas deformes y frutos chicos, nudosos y manchados.<sup class='r'><a href='#f17' aria-label='Fuente 17'>17</a></sup> Los llevan los pulgones, que inoculan el virus antes de que el insecticida los mate.<sup class='r'><a href='#f18' aria-label='Fuente 18'>18</a></sup>" },
+    { n: "Nematodo de agallas", c: "Meloidogyne", f: "foto-meloidogyne.jpg", alt: "Raíces con muchas hinchazones",
+      e: "Raíces con agallas, las hinchazones que le dan el nombre.<sup class='r'><a href='#f19' aria-label='Fuente 19'>19</a></sup> Es más grave en el norte, sobre todo en noviembre y diciembre.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>" },
+    { n: "Damping-off", c: "Pythium y Rhizoctonia", f: "foto-damping-off.jpg", alt: "Bandeja de almácigo con manchones de plantitas muertas",
+      e: "Tallo húmedo, marrón y finito al ras del suelo. Las plantitas caen en manchones.<sup class='r'><a href='#f20' aria-label='Fuente 20'>20</a></sup> Algunos años costó hasta el 40 % de los almácigos de cebolla del país.<sup class='r'><a href='#f20' aria-label='Fuente 20'>20</a></sup>" }
+  ];
+
+  var cont = document.getElementById("quiz");
+  var orden, i, puntos, fallos;
+
+  function mezclar(a) { a = a.slice(); for (var k = a.length - 1; k > 0; k--) { var r = Math.floor(Math.random() * (k + 1)); var x = a[k]; a[k] = a[r]; a[r] = x; } return a; }
+
+  function empezar() { orden = mezclar(P).slice(0, N); i = 0; puntos = 0; fallos = []; pregunta(); }
+
+  function pregunta() {
+    var p = orden[i];
+    var otras = mezclar(P.filter(function (x) { return x !== p; })).slice(0, 3);
+    var ops = mezclar(otras.concat([p]));
+    cont.innerHTML =
+      '<div class="marcador"><span>Pregunta ' + (i + 1) + " de " + N + '</span><span class="puntos">' + puntos + (puntos === 1 ? " acierto" : " aciertos") + "</span></div>" +
+      '<div class="avance" aria-hidden="true"><i style="width:' + (i / N * 100) + '%"></i></div>' +
+      '<div class="juego"><div class="foto"><img src="' + RAIZ + "img/" + p.f + '" alt="' + p.alt + '"></div>' +
+      '<div><h2 class="pregunta">¿Qué patógeno es?</h2><div class="respuestas">' +
+      ops.map(function (o) { return '<button type="button" data-n="' + o.n + '">' + o.n + "</button>"; }).join("") +
+      '</div><div id="explica"></div></div></div>';
+    cont.querySelectorAll(".respuestas button").forEach(function (b) { b.addEventListener("click", function () { responder(b, p); }); });
+  }
+
+  function responder(b, p) {
+    var bien = b.dataset.n === p.n;
+    if (bien) puntos++; else fallos.push(p);
+    cont.querySelectorAll(".respuestas button").forEach(function (x) {
+      x.disabled = true;
+      if (x.dataset.n === p.n) { x.classList.add("bien"); x.insertAdjacentHTML("beforeend", "<span>Correcto</span>"); }
+      else if (x === b) { x.classList.add("mal"); x.insertAdjacentHTML("beforeend", "<span>No</span>"); }
+      else x.classList.add("apagada");
+    });
+    cont.querySelector(".puntos").textContent = puntos + (puntos === 1 ? " acierto" : " aciertos");
+    var ultima = i === N - 1;
+    document.getElementById("explica").innerHTML =
+      '<div class="explica"><h3>' + (bien ? "Bien. " : "Era otro. ") + p.n + ", <em>" + p.c + "</em></h3><p>" + p.e + "</p></div>" +
+      '<button type="button" class="boton siguiente" id="sig">' + (ultima ? "Ver el resultado" : "Siguiente foto") + "</button>";
+    var sig = document.getElementById("sig");
+    sig.addEventListener("click", function () { i++; if (i < N) pregunta(); else final(); cont.scrollIntoView({ block: "start" }); });
+    sig.focus({ preventScroll: true });
+  }
+
+  function final() {
+    var msj = puntos >= 10 ? "Reconocés casi todos los síntomas." : puntos >= 6 ? "Vas bien. Repasá los que fallaste." : "Los síntomas se parecen bastante entre sí. Probá de nuevo.";
+    cont.innerHTML = '<div class="final"><p class="grande">' + puntos + " de " + N + "</p><h2>" + msj + "</h2>" +
+      (fallos.length ? "<p>Los que fallaste.</p><ul class=\"repaso\">" + fallos.map(function (p) {
+        return '<li><img class="lupa" src="' + RAIZ + "img/" + p.f + '" alt="" width="56" height="56"><span><b>' + p.n + "</b>, <em>" + p.c + "</em></span></li>";
+      }).join("") + "</ul>" : "") +
+      '<button type="button" class="boton" id="otra">Jugar de nuevo</button></div>';
+    document.getElementById("otra").addEventListener("click", empezar);
+  }
+
+  empezar();
+})();
+</script>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h2 id="fuentes">Fuentes</h2><ol><li id="f1">University of California Statewide Integrated Pest Management Program. (s.f.-j). <em>Late blight / Tomato</em> (UC IPM Pest Management Guidelines: Tomato). UC Statewide IPM Program. <a href="https://ipm.ucanr.edu/agriculture/tomato/late-blight/">https://ipm.ucanr.edu/agriculture/tomato/late-blight/</a></li><li id="f2">Dirección General de la Granja, Facultad de Agronomía e Instituto Nacional de Investigación Agropecuaria. (2018). <em>Normas para la producción integrada de tomate bajo invernáculo: Zona Sur. Actualización 2018</em>. <a href="https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf">https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf</a></li><li id="f3">Giménez Martínez, G. J. y Silvera Brunetto, N. J. (2023). <em>Caracterización y selección de aislados de Clonostachys spp. para el control biológico del moho gris en tomate</em> [Trabajo final de grado, Universidad de la República]. <a href="http://tesis.fagro.edu.uy/index.php/tg/catalog/download/122/71/2063?inline=1">http://tesis.fagro.edu.uy/index.php/tg/catalog/download/122/71/2063?inline=1</a></li><li id="f4">Bernal, R. (2010). <em>Enfermedades de tomate (Lycopersicum esculentum Mill.) en invernadero en las zonas de Salto y Bella Unión</em> (Serie Técnica N.º 181). INIA. <a href="https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf">https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf</a></li><li id="f5">Bernal, R. (2006). <em>Oidio del pimiento en la zona norte de Uruguay</em> (Hoja de Divulgación N.º 94). INIA. <a href="https://inia.uy/sites/default/files/publications/2025-11/hd-94-2006.pdf">https://inia.uy/sites/default/files/publications/2025-11/hd-94-2006.pdf</a></li><li id="f6">Cassanello Costabel, M. E., Núñez Milán, C. A. y Scattolini Rimada, Á. (2006). <em>Enfermedades de las cucurbitáceas en el Litoral Norte de Uruguay</em>. Facultad de Agronomía, Universidad de la República. <a href="https://www.colibri.udelar.edu.uy/items/48ccbd6d-a868-439b-9d42-9a07867cf702">https://www.colibri.udelar.edu.uy/items/48ccbd6d-a868-439b-9d42-9a07867cf702</a></li><li id="f7">Savory, E. A., Granke, L. L., Quesada-Ocampo, L. M., Varbanova, M., Hausbeck, M. K. y Day, B. (2011). The cucurbit downy mildew pathogen Pseudoperonospora cubensis. <em>Molecular Plant Pathology, 12</em>(3), 217–226. <a href="https://doi.org/10.1111/j.1364-3703.2010.00670.x">https://doi.org/10.1111/j.1364-3703.2010.00670.x</a></li><li id="f8">Rodrigues-Porto, L., Raid, R. N. y Sandoya, G. V. (2021). <em>Downy mildew of lettuce in Florida</em> (HS1403). UF/IFAS Extension. <a href="https://ask.ifas.ufl.edu/publication/HS1403">https://ask.ifas.ufl.edu/publication/HS1403</a></li><li id="f9">Arboleya, J., Maeso, D., Campelo, E., Paullier, J. y Giménez, G. (Eds.). (2013). <em>Producción integrada de cebolla</em> (Boletín de Divulgación N.º 105). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-06/bd-105-2013.pdf">https://www.inia.uy/sites/default/files/publications/2024-06/bd-105-2013.pdf</a></li><li id="f10">Heffer Link, V. y Johnson, K. B. (2007). White mold. <em>The Plant Health Instructor</em>. <a href="https://doi.org/10.1094/PHI-I-2007-0809-01">https://doi.org/10.1094/PHI-I-2007-0809-01</a></li><li id="f11">Cazzulo Leal, Y. y Geraldi Amestoy, E. (2017). <em>Agentes asociados a muerte de plantas de morrón (Capsicum annuum L.) en cultivos protegidos en el sur de Uruguay, relacionados a diferentes medidas de manejo</em> [Tesis de grado, Universidad de la República]. Colibri. <a href="https://www.colibri.udelar.edu.uy/server/api/core/bitstreams/f45a932d-a78e-4f85-85ea-2c70e582beba/content">https://www.colibri.udelar.edu.uy/server/api/core/bitstreams/f45a932d-a78e-4f85-85ea-2c70e582beba/content</a></li><li id="f12">University of California Statewide Integrated Pest Management Program. (s.f.-h). <em>Fusarium wilt / Tomato</em> (UC IPM Pest Management Guidelines: Tomato; UC ANR Publication 3470). UC Statewide IPM Program. <a href="https://ipm.ucanr.edu/agriculture/tomato/fusarium-wilt/">https://ipm.ucanr.edu/agriculture/tomato/fusarium-wilt/</a></li><li id="f13">Siri, M. I., Croce, V., Lapaz, M. I., Hernández, F., Montelongo, M. J., González, M., Maeso, D. y Pianzzola, M. J. (2015). Identificación, caracterización y diagnóstico molecular de bacterias patógenas que afectan a los cultivos de tomate. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 3–16). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li><li id="f14">Berrueta, C., Giménez, G., Galván, G. y Borges, A. (2014). Componentes de resistencia a Xanthomonas vesicatoria raza T2 en genotipos de tomate en condiciones de invernadero y cámara de crecimiento. <em>Agrociencia Uruguay, 18</em>(1), 86–96. <a href="https://doi.org/10.31285/AGRO.18.442">https://doi.org/10.31285/AGRO.18.442</a></li><li id="f15">University of California Statewide Integrated Pest Management Program. (s.f.-o). <em>Tomato spotted wilt / Tomato</em> (UC IPM Pest Management Guidelines: Tomato; UC ANR Publication 3470). UC Statewide IPM Program. <a href="https://ipm.ucanr.edu/agriculture/tomato/tomato-spotted-wilt/">https://ipm.ucanr.edu/agriculture/tomato/tomato-spotted-wilt/</a></li><li id="f16">Maeso, D., Paullier, J., González, P., Arboleya, J., Fernández, A. y Walasek, W. (2015b). Seguimiento de 'peste negra' en morrón: Experimentos en la zona sur de Uruguay. Ciclo 2013-2014. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 92–107). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li><li id="f17">McGrath, M. T. (2021). <em>Virus diseases of cucurbits</em>. Cornell Vegetables, Cornell University. <a href="https://www.vegetables.cornell.edu/pest-management/disease-factsheets/virus-diseases-of-cucurbits/">https://www.vegetables.cornell.edu/pest-management/disease-factsheets/virus-diseases-of-cucurbits/</a></li><li id="f18">Flint, M. L. (2013). <em>Pest notes: Aphids</em> (UC ANR Publication 7404). UC Statewide IPM Program. <a href="https://ipm.ucanr.edu/PMG/PESTNOTES/pn7404.html">https://ipm.ucanr.edu/PMG/PESTNOTES/pn7404.html</a></li><li id="f19">Piedra Buena, A., Díez-Rojo, M. A., Bello, A., Robertson, L., López-Pérez, J. A., Escuer, M. y de León, L. (2005). Comportamiento de Meloidogyne incognita sobre tomate y pimiento resistente en Uruguay. <em>Nematropica, 35</em>(2), 111–120. <a href="https://journals.flvc.org/nematropica/article/view/69718/67378">https://journals.flvc.org/nematropica/article/view/69718/67378</a></li><li id="f20">Lasa, C. I. y Smith, L. R. (1981). <em>Damping-off, descripción y control</em> (Miscelánea 32). Centro de Investigaciones Agrícolas Alberto Boerger. <a href="https://www.inia.uy/sites/default/files/publications/2024-10/CIAAB-Miscelanea-32-1981.pdf">https://www.inia.uy/sites/default/files/publications/2024-10/CIAAB-Miscelanea-32-1981.pdf</a></li></ol><h3>Fotos</h3><ul><li><b>Moho gris</b>. Foto de Rasbak at Dutch Wikipedia, <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Botrytis_tomaat.jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de la lechuga</b>. Foto de Gerald Holmes, Strawberry Center, Cal Poly San Luis Obispo, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/5608244">IPM Images</a>.</li><li><b>Cancro bacteriano</b>. Foto de Scot Nelson, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Bacterial_canker_of_tomato_caused_by_Corynebacterium_michiganense_pv._michiganense_(9777392932).jpg">Wikimedia Commons</a>.</li><li><b>Damping-off</b>. Foto de Dr. Jan Hinrichs-Berger, Landwirtschaftliches Technologiezentrum Augustenberg, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Rucola_-_Pythium_-_Hinrichs-Berger,_Augustenberg.jpg">Wikimedia Commons</a>.</li><li><b>Fusarium</b>. Foto de Victor M. Vicente Selvas, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomaquera_amb_Fusarium_HV.JPG">Wikimedia Commons</a>.</li><li><b>Oídio</b>. Foto de Dr. Parthasarathy Seethapathy, Amrita School of Agricultural Sciences, Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:5573619-PPT-powdery_mildew_(Leveillula_taurica).jpg">Wikimedia Commons</a>.</li><li><b>Nematodo de agallas</b>. Foto de Plant pests and diseases, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_(Solanum_lycopersicum)-_Galling_from_root-knot_nematodes.jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de la cebolla</b>. Foto de Jochen Kreiselmaier, DLR Rheinpfalz, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Falscher_Mehltau_2_(Peronospora_destructor)-DLR-NW-jk.jpg">Wikimedia Commons</a>.</li><li><b>Phytophthora del morrón</b>. Foto de Edward Sikora, Auburn University, Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0/us/deed.en">CC BY 3.0 US</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Capsicum_annuum_with_Phytophthora_capsici.jpg">Wikimedia Commons</a>.</li><li><b>Tizón tardío</b>. Foto de Scot Nelson from Honolulu, Hawaii, USA, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_late_blight_leaf_sporulating_lesions_1_(5816170621).jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de las cucurbitáceas</b>. Foto de Christian Hummert (Ixitixel), <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Falscher_Mehltau.jpg">Wikimedia Commons</a>.</li><li><b>Moho blanco</b>. Foto de Gerald Holmes, Strawberry Center, Cal Poly San Luis Obispo, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/5604267">IPM Images</a>.</li><li><b>Peste negra</b>. Foto de William M. Brown Jr., Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_spotted_wilt_virus_5356805-PPT.png">Wikimedia Commons</a>.</li><li><b>Mancha bacteriana</b>. Foto de Edward Sikora, Auburn University, <a href="https://creativecommons.org/licenses/by/3.0/us/">CC BY 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/1568045">IPM Images</a>.</li><li><b>Virosis de cucurbitáceas</b>. Foto de Downtowngal, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Zucchini_yellow_mosaic_virus_fruits_and_leaves_(cropped).jpg">Wikimedia Commons</a>.</li></ul><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('../sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>

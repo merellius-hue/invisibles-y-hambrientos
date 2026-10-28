@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El viaje del virus | Invisibles y hambrientos</title>
+<meta name="description" content="Animación. Cómo un trips carga el virus de la peste negra de larva y lo lleva de adulto a una planta sana.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="../img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.escenario { background: #DCEBF2; border-radius: 18px 18px 0 0; overflow: hidden; margin-top: 8px; }
+.escenario svg { display: block; width: 100%; height: auto; }
+.escenario text { font-family: var(--titulos); }
+.leyenda-paso { min-height: 9em; background: var(--papel); border: 1px solid var(--linea); border-radius: 0 0 18px 18px; padding: 16px 18px 10px; }
+.leyenda-paso .cuando { font-family: var(--titulos); font-weight: 700; color: var(--terra-texto); font-size: .95rem; margin-bottom: .3rem; }
+.leyenda-paso p { font-size: 1.08rem; margin-bottom: .5rem; }
+.leyenda-paso ul { margin: 0 0 .5rem; padding-left: 1.2em; font-size: 1.05rem; }
+.controles { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0 10px; }
+.pasos { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.pasos button { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--linea); background: var(--papel); font-family: var(--titulos); font-weight: 700; font-size: .85rem; color: var(--carbon); cursor: pointer; padding: 0; }
+.pasos button.hecho { border-color: var(--verde); }
+.pasos button[aria-current=step] { background: var(--verde); border-color: var(--verde); color: #fff; }
+.progreso { height: 6px; background: var(--linea); border-radius: 99px; overflow: hidden; }
+.progreso i { display: block; height: 100%; width: 0; background: var(--terra); }
+.boton-redondo { width: 52px; height: 52px; padding: 0; }
+.latencia { background: var(--papel); border: 1px solid var(--linea); border-radius: 18px; padding: 20px 18px 10px; margin-top: 2.2rem; }
+.reloj { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-items: center; margin: 1.2rem 0 1rem; }
+.reloj .horas { font-family: var(--titulos); font-weight: 800; font-stretch: 75%; font-size: 3.2rem; line-height: 1; color: var(--terra-texto); font-variant-numeric: tabular-nums; }
+.reloj .dias { font-size: 1.05rem; }
+.reloj .pista { grid-column: 1 / -1; height: 14px; background: var(--linea); border-radius: 99px; overflow: hidden; }
+.reloj .pista i { display: block; height: 100%; background: var(--terra); border-radius: 99px; transition: width .5s ease; }
+.foto-trips { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 2rem 0 0; }
+.foto-trips img { border-radius: 14px; }
+.foto-trips figcaption { font-size: .95rem; color: var(--apagado); }
+</style>
+</head>
+<body>
+<header class="tope"><a class="volver" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a><span class="marca">Invisibles y hambrientos</span></header>
+<main id="contenido">
+
+
+<div class="envoltura ancha">
+  <header class="cabeza">
+    <span class="pagina">Página 6 del informe</span>
+    <h1>El viaje del virus</h1>
+    <p class="bajada">El virus de la peste negra no camina. Lo lleva un insecto chiquito, el trips, que lo carga de joven y lo reparte de adulto.</p>
+  </header>
+
+  <div class="escenario">
+    <svg id="escena" viewBox="20 62 360 196" role="img" aria-labelledby="esc-tit">
+      <title id="esc-tit">Una larva de trips come en una planta enferma, se vuelve adulto con alas y vuela a una planta sana que después muestra síntomas de peste negra.</title>
+      <rect y="214" width="400" height="46" fill="#7A6249"/>
+      <rect y="210" width="400" height="6" fill="#86A35E"/>
+      <g id="planta-i"></g>
+      <g id="planta-d"></g>
+      <path id="ruta" d="M118 150 Q200 60 286 140" fill="none" stroke="#333F48" stroke-width="1.4" stroke-dasharray="4 5" opacity="0"/>
+      <g id="virus" fill="#C0603A"></g>
+      <g id="bicho">
+        <g id="alas" opacity="0" stroke="#7C6A4A" stroke-width=".7">
+          <path d="M-2 -1 L-16 -7" stroke-width="1.6" stroke="#E9DFC4"/><path d="M-2 1 L-16 6" stroke-width="1.6" stroke="#E9DFC4"/>
+          <path d="M-4 -2 l-1 -3 M-7 -3 l-1 -3 M-10 -4 l-1 -3 M-13 -5.5 l-1 -3 M-4 2 l-1 3 M-7 3 l-1 3 M-10 4 l-1 3 M-13 5 l-1 3"/>
+        </g>
+        <ellipse id="cuerpo" cx="0" cy="0" rx="9" ry="2.8" fill="#E5CF6A" stroke="#8B7533" stroke-width=".6"/>
+        <circle id="cabeza" cx="9.5" cy="0" r="2.2" fill="#D4BB55"/>
+        <path d="M11 -1 l5 -3 M11 1 l5 3" stroke="#8B7533" stroke-width=".7"/>
+        <g id="virus-adentro" fill="#C0603A"></g>
+      </g>
+      <g id="etiqueta" opacity="0">
+        <rect x="236" y="70" width="132" height="26" rx="13" fill="#333F48"/>
+        <text x="302" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">20 días después</text>
+      </g>
+      <text id="rotulo-i" x="100" y="246" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Planta enferma</text>
+      <text id="rotulo-d" x="300" y="246" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Planta sana</text>
+    </svg>
+  </div>
+  <div class="leyenda-paso" aria-live="polite" id="leyenda"></div>
+
+  <div class="controles">
+    <button class="boton boton-redondo" id="play" type="button" aria-label="Reproducir"></button>
+    <button class="boton claro" id="reinicio" type="button">Volver a empezar</button>
+    <div class="pasos" id="pasos" role="group" aria-label="Ir a un paso"></div>
+  </div>
+  <div class="progreso" aria-hidden="true"><i id="barra"></i></div>
+
+  <section class="latencia" aria-labelledby="lat-tit">
+    <h2 id="lat-tit">Calor y espera</h2>
+    <p>El período latente es el tiempo entre que el insecto carga el virus y puede pasarlo. En la larva del trips depende del calor.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup> Elegí una temperatura.</p>
+    <fieldset class="opciones">
+      <legend class="oculto-visual">Temperatura</legend>
+      <label><input type="radio" name="temp" value="0" checked><span>20 °C</span></label>
+      <label><input type="radio" name="temp" value="1"><span>24 °C</span></label>
+      <label><input type="radio" name="temp" value="2"><span>27 °C</span></label>
+    </fieldset>
+    <div class="reloj" aria-live="polite">
+      <span class="horas" id="horas">171 h</span><span class="dias" id="dias"></span>
+      <span class="pista" aria-hidden="true"><i id="pista"></i></span>
+    </div>
+    <p>Con 7 °C más, el trips empieza a transmitir en la mitad del tiempo. Según entiendo, por eso el calor ayuda a que la peste negra avance más rápido.</p>
+    <p class="margen">Pasar de horas a días es una cuenta mía.</p>
+  </section>
+
+  <figure class="foto-trips">
+    <img src="../img/foto-extra-trips.jpg" alt="Trips adulto, un insecto alargado y amarillento con alas de flecos" width="1000" height="602" loading="lazy">
+    <figcaption>Trips occidental de las flores, Frankliniella occidentalis, el vector de la peste negra.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup></figcaption>
+  </figure>
+</div>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var $ = function (id) { return document.getElementById(id); };
+  var reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var DUR = 6;
+  var PASOS = [
+    { c: "La enfermedad", t: "La peste negra la causa un virus, el TSWV. Lo lleva el trips Frankliniella occidentalis.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup> A la izquierda hay una planta enferma." },
+    { c: "La larva come", t: "Una larva recién nacida come en la planta enferma. En unos 15 minutos de alimentación carga el virus.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup>" },
+    { c: "Solo la larva joven", t: "Las larvas de 0 a 2 días adquieren el virus y lo transmiten de adultas. Las de segundo estadio ya no.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup> En un adulto, el virus no puede salir del intestino hacia el resto del cuerpo.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>" },
+    { c: "Período latente", t: "Antes de poder pasarlo hay una espera. El virus se multiplica adentro del trips. A 20 °C esa espera duró en promedio 171 horas y a 27 °C, 84 horas.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>" },
+    { c: "Le salen alas", t: "La larva crece y se vuelve adulto. Las etapas anteriores casi no se mueven, así que el que reparte el virus es el adulto.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a></sup>" },
+    { c: "El vuelo", t: "El adulto vuela a otra planta. Queda infectado de por vida.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a></sup>" },
+    { c: "La picadura", t: "Pica la planta sana y le pasa el virus. Unos 20 días después aparecen los síntomas.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup> Hojas jóvenes bronceadas, puntas secas y anillos en los frutos.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>" },
+    { c: "En un cultivo de Salto", t: "Se llegaron a contar unos 30 trips por trampa por día. Entre 15 y 20 días después apareció una gran cantidad de plantas con peste negra.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup>", fin: true }
+  ];
+  var TOTAL = PASOS.length * DUR;
+
+  function el(tag, at, padre) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); padre.appendChild(e); return e; }
+
+  // plantas
+  var HOJAS_I = [], HOJAS_D = [], FRUTOS_D = [];
+  function planta(g, x, enferma, hojas, frutos) {
+    el("path", { d: "M" + x + " 212 C" + (x - 3) + " 180 " + (x + 3) + " 150 " + x + " 112", stroke: "#3E6B3A", "stroke-width": 3.2, fill: "none" }, g);
+    [[-18, 196, -22], [17, 182, 24], [-17, 162, -28], [16, 144, 30], [-13, 126, -34], [11, 114, 36]].forEach(function (h) {
+      var cx = x + h[0], cy = h[1];
+      var e = el("ellipse", { cx: cx, cy: cy, rx: 16, ry: 7, fill: enferma ? "#8C7A3A" : "#4F8A45", transform: "rotate(" + h[2] + " " + cx + " " + cy + ")" }, g);
+      hojas.push({ e: e, x: cx, y: cy });
+    });
+    [[8, 170], [-8, 150]].forEach(function (f) {
+      var c = el("circle", { cx: x + f[0], cy: f[1], r: 8, fill: "#D9442E" }, g);
+      var a1 = el("circle", { cx: x + f[0], cy: f[1], r: 5, fill: "none", stroke: "#F3D35A", "stroke-width": 1.6, opacity: enferma ? 1 : 0 }, g);
+      var a2 = el("circle", { cx: x + f[0], cy: f[1], r: 2.4, fill: "none", stroke: "#F3D35A", "stroke-width": 1.2, opacity: enferma ? 1 : 0 }, g);
+      if (frutos) frutos.push(a1, a2);
+    });
+  }
+  planta($("planta-i"), 100, true, HOJAS_I);
+  planta($("planta-d"), 300, false, HOJAS_D, FRUTOS_D);
+
+  // virus en la planta enferma, que pasan a la larva
+  var VIR = [];
+  for (var i = 0; i < 6; i++) VIR.push(el("circle", { r: 1.9 }, $("virus")));
+  var ADENTRO = [];
+  for (var j = 0; j < 12; j++) ADENTRO.push(el("circle", { cx: -6 + (j % 6) * 2.4, cy: (j < 6 ? -0.8 : 0.9), r: .85, opacity: 0 }, $("virus-adentro")));
+
+  var HOJA_I = { x: 118, y: 150 }, HOJA_D = { x: 286, y: 140 };
+  function curva(f) { var a = (1 - f) * (1 - f), b = 2 * (1 - f) * f, c = f * f; return [a * 118 + b * 200 + c * 286, a * 150 + b * 60 + c * 140]; }
+  function lerp(a, b, f) { return a + (b - a) * f; }
+  function suave(f) { f = Math.max(0, Math.min(1, f)); return f * f * (3 - 2 * f); }
+  function mezclaColor(a, b, f) { return "rgb(" + a.map(function (v, i) { return Math.round(lerp(v, b[i], f)); }).join(",") + ")"; }
+
+  function dibujar(t) {
+    var paso = Math.min(Math.floor(t / DUR), PASOS.length - 1);
+    var f = reducido ? 1 : suave((t - paso * DUR) / (DUR * 0.7));
+    var reloj = reducido ? 0 : t;
+    var bx = HOJA_I.x, by = HOJA_I.y - 8, esc = 1.7, alas = 0, giro = 0, visible = paso >= 1 ? 1 : 0;
+    if (paso <= 3) { by += Math.sin(reloj * 5) * .8; }
+    if (paso === 4) { esc = lerp(1.7, 2.3, f); alas = f; }
+    if (paso === 5) {
+      var p = curva(f); bx = p[0]; by = p[1] - 8; esc = 2.3; alas = 1;
+      var p2 = curva(Math.min(1, f + .02)); giro = Math.atan2(p2[1] - p[1], p2[0] - p[0]) * 180 / Math.PI;
+    }
+    if (paso >= 6) { bx = HOJA_D.x; by = HOJA_D.y - 8 + Math.sin(reloj * 5) * .8; esc = 2.3; alas = 1; giro = 180; }
+    var batir = paso === 5 && !reducido ? .6 + .4 * Math.abs(Math.sin(reloj * 40)) : 1;
+    $("bicho").setAttribute("transform", "translate(" + bx + " " + by + ") rotate(" + giro + ") scale(" + esc + ")");
+    $("bicho").setAttribute("opacity", visible);
+    $("alas").setAttribute("opacity", alas);
+    $("alas").setAttribute("transform", "scale(1 " + batir + ")");
+    $("cuerpo").setAttribute("fill", mezclaColor([229, 207, 106], [196, 160, 86], paso >= 4 ? (paso === 4 ? f : 1) : 0));
+    $("ruta").setAttribute("opacity", paso === 5 ? .5 : 0);
+
+    // virus: en la planta (0), entrando a la larva (1), adentro (2 a 5), pasando a la planta sana (6+)
+    VIR.forEach(function (v, i) {
+      var hx = HOJAS_I[i % HOJAS_I.length].x, hy = HOJAS_I[i % HOJAS_I.length].y;
+      var x = hx, y = hy, o = 1;
+      if (paso === 1) { var g = suave(f * 1.3 - i * .06); x = lerp(hx, bx, g); y = lerp(hy, by, g); o = 1 - g * .9; }
+      if (paso >= 2) o = 0;
+      if (paso >= 6) {
+        var hd = HOJAS_D[i % HOJAS_D.length], g2 = suave(f * 1.3 - i * .06);
+        x = lerp(bx, hd.x, g2); y = lerp(by, hd.y, g2); o = g2 > .02 ? 1 : 0;
+      }
+      v.setAttribute("cx", x); v.setAttribute("cy", y); v.setAttribute("opacity", o);
+    });
+    var cuantos = paso < 1 ? 0 : paso === 1 ? Math.round(f * 4) : paso === 2 ? 4 : paso === 3 ? 4 + Math.round(f * 8) : 12;
+    ADENTRO.forEach(function (a, i) { a.setAttribute("opacity", i < cuantos ? 1 : 0); });
+
+    // síntomas en la planta sana
+    var sint = paso >= 6 ? (paso === 6 ? suave((t - 6 * DUR) / DUR * 1.4 - .3) : 1) : 0;
+    if (reducido && paso >= 6) sint = 1;
+    HOJAS_D.forEach(function (h, i) { h.e.setAttribute("fill", mezclaColor([79, 138, 69], [140, 122, 58], Math.max(0, Math.min(1, sint * 1.3 - (i % 3) * .15)))); });
+    FRUTOS_D.forEach(function (a) { a.setAttribute("opacity", sint); });
+    $("etiqueta").setAttribute("opacity", paso >= 6 ? Math.min(1, sint * 2) : 0);
+    $("rotulo-d").textContent = sint > .5 ? "Planta con peste negra" : "Planta sana";
+  }
+
+  // controles
+  var t = 0, jugando = false, ultimo = null, pasoMostrado = -1;
+  var iconoPlay = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  var iconoPausa = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+  var pasos = $("pasos");
+  PASOS.forEach(function (p, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.textContent = i + 1; b.setAttribute("aria-label", "Paso " + (i + 1) + ". " + p.c);
+    b.addEventListener("click", function () { ir(i * DUR + (reducido ? DUR - .01 : 0.01)); });
+    pasos.appendChild(b);
+  });
+  function mostrarPaso(i) {
+    if (i === pasoMostrado) return;
+    pasoMostrado = i;
+    var p = PASOS[i];
+    var html = '<p class="cuando">' + (i + 1) + " de " + PASOS.length + ". " + p.c + "</p><p>" + p.t + "</p>";
+    if (p.fin) html += "<p><b>Cómo se corta el viaje.</b></p><ul><li>Almácigo bajo malla antiinsectos.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup></li><li>Malezas controladas dentro y fuera del invernáculo. La naranjilla guarda el virus entre un cultivo y otro.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a>,<a href='#f8' aria-label='Fuente 8'>8</a></sup></li><li>Arrancar las plantas con síntomas.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup></li></ul>";
+    $("leyenda").innerHTML = html;
+    pasos.querySelectorAll("button").forEach(function (b, k) {
+      b.classList.toggle("hecho", k < i);
+      if (k === i) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+    });
+  }
+  function ir(nt) {
+    t = Math.max(0, Math.min(TOTAL - 0.001, nt));
+    dibujar(t);
+    mostrarPaso(Math.floor(t / DUR));
+    $("barra").style.width = (t / TOTAL * 100) + "%";
+  }
+  function cuadro(ahora) {
+    if (!jugando) return;
+    if (ultimo !== null) {
+      var dt = (ahora - ultimo) / 1000;
+      if (reducido) {
+        var antes = Math.floor(t / DUR);
+        t += dt;
+        ir(Math.floor(t / DUR) !== antes ? Math.floor(t / DUR) * DUR + DUR - .01 : t);
+      } else ir(t + dt);
+    }
+    ultimo = ahora;
+    if (t >= TOTAL - 0.01) { pausar(); return; }
+    requestAnimationFrame(cuadro);
+  }
+  function jugar() { if (t >= TOTAL - 0.01) ir(0); jugando = true; ultimo = null; ponerBoton(); requestAnimationFrame(cuadro); }
+  function pausar() { jugando = false; ponerBoton(); }
+  function ponerBoton() { $("play").innerHTML = jugando ? iconoPausa : iconoPlay; $("play").setAttribute("aria-label", jugando ? "Pausar" : "Reproducir"); }
+  $("play").addEventListener("click", function () { jugando ? pausar() : jugar(); });
+  $("reinicio").addEventListener("click", function () { ir(0); jugar(); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) pausar(); });
+  ir(reducido ? DUR - .01 : 0);
+  ponerBoton();
+  if (!reducido) jugar();
+
+  // período latente
+  var LAT = [171, 109, 84];
+  function latencia() {
+    var i = +document.querySelector("input[name=temp]:checked").value;
+    var h = LAT[i], d = Math.round(h / 24 * 2) / 2;
+    $("horas").textContent = h + " h";
+    $("dias").textContent = "unos " + String(d).replace(".", ",") + " días de espera";
+    $("pista").style.width = (h / 171 * 100) + "%";
+  }
+  document.querySelectorAll("input[name=temp]").forEach(function (r) { r.addEventListener("change", latencia); });
+  latencia();
+})();
+</script>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h2 id="fuentes">Fuentes</h2><ol><li id="f1">Wijkamp, I. y Peters, D. (1993). Determination of the median latent period of two tospoviruses in Frankliniella occidentalis, using a novel leaf disk assay. <em>Phytopathology, 83</em>(7), 986–991. <a href="https://doi.org/10.1094/Phyto-83-986">https://doi.org/10.1094/Phyto-83-986</a></li><li id="f2">Maeso, D., Paullier, J., González, P., Arboleya, J., Fernández, A. y Walasek, W. (2015b). Seguimiento de 'peste negra' en morrón: Experimentos en la zona sur de Uruguay. Ciclo 2013-2014. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 92–107). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li><li id="f3">Bernal, R. (2010). <em>Enfermedades de tomate (Lycopersicum esculentum Mill.) en invernadero en las zonas de Salto y Bella Unión</em> (Serie Técnica N.º 181). INIA. <a href="https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf">https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf</a></li><li id="f4">van de Wetering, F., Goldbach, R. y Peters, D. (1996). Transmission of tomato spotted wilt virus by Frankliniella occidentalis after viral acquisition during the first larval stage. <em>Acta Horticulturae, 431</em>, 350–366. <a href="https://doi.org/10.17660/ActaHortic.1996.431.30">https://doi.org/10.17660/ActaHortic.1996.431.30</a></li><li id="f5">Gray, S. M. y Banerjee, N. (1999). Mechanisms of arthropod transmission of plant and animal viruses. <em>Microbiology and Molecular Biology Reviews, 63</em>(1), 128–148. <a href="https://doi.org/10.1128/MMBR.63.1.128-148.1999">https://doi.org/10.1128/MMBR.63.1.128-148.1999</a></li><li id="f6">University of Georgia. (s.f.). <em>Epidemiology</em>. USDA RAMP Project: Tomato Spotted Wilt Virus. <a href="https://tswv.caes.uga.edu/usda-ramp-project/epidemiology.html">https://tswv.caes.uga.edu/usda-ramp-project/epidemiology.html</a></li><li id="f7">University of California Statewide Integrated Pest Management Program. (s.f.-o). <em>Tomato spotted wilt / Tomato</em> (UC IPM Pest Management Guidelines: Tomato; UC ANR Publication 3470). UC Statewide IPM Program. <a href="https://ipm.ucanr.edu/agriculture/tomato/tomato-spotted-wilt/">https://ipm.ucanr.edu/agriculture/tomato/tomato-spotted-wilt/</a></li><li id="f8">Rubio, L., Amaral, J., González, M., Arruabarrena, A. y Maeso, D. (2014b). Situación actual del virus de la "peste negra" en los cultivos de pimiento del norte del país. En <em>Avances de investigación: Protección vegetal en tomate y morrón</em> (Serie Actividades de Difusión N.º 740, pp. 2–13). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf">https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf</a></li></ol><h3>Fotos</h3><ul><li><b>Trips</b>. Foto de Frank Peairs, Colorado State University, Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Frankliniella_occidentalis_5364132-LGPT.jpg">Wikimedia Commons</a>.</li></ul><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('../sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>

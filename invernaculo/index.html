@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Una noche en el invernáculo | Invisibles y hambrientos</title>
+<meta name="description" content="Animación de un minuto. Cómo un invernáculo cerrado de noche junta humedad, gotea y deja germinar al moho gris, y qué cambia al ventilar.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="../img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.escenario { background: var(--carbon); border-radius: 18px; overflow: hidden; margin: 8px 0 0; }
+.escenario svg { display: block; width: 100%; height: auto; }
+.escenario text { font-family: var(--titulos); }
+.controles { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0 10px; }
+.pasos { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.pasos button {
+  width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--linea); background: var(--papel);
+  font-family: var(--titulos); font-weight: 700; font-size: .85rem; color: var(--carbon); cursor: pointer; padding: 0;
+}
+.pasos button.hecho { border-color: var(--verde); }
+.pasos button[aria-current=step] { background: var(--verde); border-color: var(--verde); color: #fff; }
+.progreso { height: 6px; background: var(--linea); border-radius: 99px; overflow: hidden; }
+.progreso i { display: block; height: 100%; width: 0; background: var(--terra); }
+.leyenda-paso { min-height: 9.5em; background: var(--papel); border: 1px solid var(--linea); border-radius: 0 0 18px 18px; padding: 16px 18px 10px; margin-top: -1px; }
+.leyenda-paso .cuando { font-family: var(--titulos); font-weight: 700; color: var(--terra-texto); font-size: .95rem; margin-bottom: .3rem; }
+.leyenda-paso p { font-size: 1.08rem; margin-bottom: .5rem; }
+.lisboa { display: grid; gap: 12px; margin: 10px 0 6px; }
+.lisboa h3 { font-size: 1rem; margin: 0 0 .25rem; }
+.par { display: grid; grid-template-columns: 6.6em 1fr; gap: 4px 10px; align-items: center; font-family: var(--titulos); font-size: .9rem; }
+.par .b { height: 18px; border-radius: 3px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; color: #fff; font-weight: 700; font-size: .82rem; min-width: 3.2em; }
+.par .cerr { background: var(--terra); }
+.par .vent { background: var(--verde); }
+.boton-redondo { width: 52px; height: 52px; padding: 0; }
+</style>
+</head>
+<body>
+<header class="tope"><a class="volver" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a><span class="marca">Invisibles y hambrientos</span></header>
+<main id="contenido">
+
+
+<div class="envoltura ancha">
+  <header class="cabeza">
+    <span class="pagina">Página 6 del informe</span>
+    <h1>Una noche en el invernáculo</h1>
+    <p class="bajada">Qué pasa adentro del plástico entre el atardecer y la mañana, y por qué ahí aparece el moho gris.</p>
+  </header>
+
+  <div class="escenario">
+    <svg id="escena" viewBox="0 0 400 280" role="img" aria-labelledby="esc-tit">
+      <title id="esc-tit">Corte de un invernáculo de tomate de noche. Sube la humedad, el plástico gotea y germinan esporas en las hojas.</title>
+      <defs>
+        <linearGradient id="suelo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A6249"/><stop offset="1" stop-color="#5A4836"/></linearGradient>
+        <marker id="punta" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#DDF0FF"/></marker>
+      </defs>
+      <rect id="cielo" width="400" height="280" fill="#F2B880"/>
+      <g id="estrellas" fill="#fff" opacity="0">
+        <circle cx="60" cy="30" r="1.2"/><circle cx="150" cy="18" r="1"/><circle cx="250" cy="26" r="1.3"/><circle cx="330" cy="14" r="1"/><circle cx="380" cy="48" r="1.1"/><circle cx="105" cy="52" r="1"/><circle cx="300" cy="60" r="1"/>
+      </g>
+      <circle id="sol" cx="350" cy="70" r="15" fill="#F7D57E"/>
+      <circle id="luna" cx="70" cy="40" r="9" fill="#EEF2F5" opacity="0"/>
+      <rect y="232" width="400" height="48" fill="url(#suelo)"/>
+      <path id="aire" d="M44 232 L44 141 Q200 34 356 141 L356 232 Z" fill="#B9CFE0" opacity="0"/>
+      <g id="plantas"></g>
+      <g id="esporas"></g>
+      <g id="vapor" fill="#E8F4FF"></g>
+      <g id="caen" fill="#BFE3FF"></g>
+      <path d="M40 232 L40 140 Q200 30 360 140 L360 232" fill="none" stroke="#EEF3F5" stroke-width="3" opacity=".9"/>
+      <g id="gotas" fill="#CFEAFF" stroke="#8FB9D8" stroke-width=".6"></g>
+      <rect id="vent-i" x="35" y="160" width="10" height="62" rx="2" fill="#EEF3F5" opacity=".85"/>
+      <rect id="vent-d" x="355" y="160" width="10" height="62" rx="2" fill="#EEF3F5" opacity=".85"/>
+      <g id="corriente" stroke="#DDF0FF" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0" marker-end="url(#punta)">
+        <path d="M2 196 C24 196 40 192 66 188"/><path d="M398 182 C374 182 360 186 334 190"/>
+      </g>
+      <g transform="translate(10 24)">
+        <rect width="16" height="150" rx="8" fill="rgba(255,255,255,.25)" stroke="#fff" stroke-width="1.5"/>
+        <rect id="hr-barra" x="3" y="147" width="10" height="0" rx="5" fill="#9FD0F5"/>
+        <line x1="-3" x2="19" y1="18" y2="18" stroke="#fff" stroke-width="1.5" stroke-dasharray="3 2"/>
+        <text x="22" y="22" font-size="10" fill="#fff" font-weight="700">90 %</text>
+        <text x="0" y="166" font-size="10" fill="#fff" font-weight="700">HR</text>
+      </g>
+      <text id="hr-texto" x="200" y="266" text-anchor="middle" font-size="12" font-weight="700" fill="#fff"></text>
+    </svg>
+  </div>
+  <div class="leyenda-paso" aria-live="polite" id="leyenda"></div>
+
+  <div class="controles">
+    <button class="boton boton-redondo" id="play" type="button" aria-label="Reproducir"></button>
+    <button class="boton claro" id="reinicio" type="button">Volver a empezar</button>
+    <div class="pasos" id="pasos" role="group" aria-label="Ir a un paso"></div>
+  </div>
+  <div class="progreso" aria-hidden="true"><i id="barra"></i></div>
+
+  <div class="envoltura" style="padding:0;margin:2rem 0 0">
+    <h2>Lo que muestra</h2>
+    <p>En Salto, en todos los ciclos de tomate medidos, más del 30 % del tiempo la humedad estuvo por encima de 90 %. En muchos cultivos la pérdida de fruta por Botrytis fue severa.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup></p>
+    <p>Por eso las normas uruguayas para el tomate de invernáculo piden ventilar, no regar de más y usar plástico antigoteo.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup> En días muy lluviosos, ventilar todo el tiempo puede subir la humedad.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup></p>
+    <p class="margen"><b>Humedad relativa.</b> Cuánto vapor tiene el aire comparado con el máximo posible a esa temperatura. <b>Incidencia.</b> El porcentaje de casos con la enfermedad. <b>Antigoteo.</b> Plástico que hace escurrir el agua condensada por la pendiente del techo, en vez de dejarla caer sobre las plantas. El dibujo es una simplificación y la barra de humedad no tiene escala.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var $ = function (id) { return document.getElementById(id); };
+  var reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var DUR = 6;
+
+  var PASOS = [
+    { c: "Atardecer", t: "Un invernáculo de tomate en Salto. En 2016 y 2017 se pusieron sensores adentro de 79 cultivos como este.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>" },
+    { c: "Cae el sol", t: "El invernáculo se cierra para guardar el calor. Desde mediados de mayo los productores lo abren menos.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>" },
+    { c: "Primeras horas de la noche", t: "Las plantas siguen transpirando, o sea, largan vapor de agua por las hojas. Si el aire no se renueva, el vapor queda adentro.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>" },
+    { c: "Medianoche", t: "La humedad relativa pasa del 90 %. En un invernáculo de tomate del sur de Brasil la humedad fue más alta adentro que afuera durante toda la noche.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>" },
+    { c: "Madrugada", t: "El plástico se enfría y el vapor se condensa en su cara interna. Las gotas caen sobre las hojas.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup> El plástico antigoteo las hace escurrir por la pendiente del techo.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>" },
+    { c: "Antes del amanecer", t: "Con más de 90 % de humedad germinan las esporas de Botrytis cinerea, el hongo del moho gris.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup> En Salto, los tomates plantados en marzo de 2016 pasaron 2.572 horas así, el 42 % del ciclo.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>" },
+    { c: "Amanece", t: "Se abren los costados y entra aire más seco. La humedad baja.", },
+    { c: "Media mañana", t: "En el invernáculo de Brasil la humedad fue menor adentro que afuera solo entre las 8 y las 14 horas.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup> El resto del día y toda la noche, el aire de adentro estuvo más húmedo." },
+    { c: "¿Qué pasa si se ventila de noche?", t: "En Lisboa compararon dos invernáculos iguales. Uno se cerraba de noche y el otro quedaba ventilado.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup>", lisboa: true }
+  ];
+  var TOTAL = PASOS.length * DUR;
+
+  // estado al final de cada paso: cielo, sol, luna, estrellas, ventilación, vapor, condensación, goteo, esporas, humedad
+  var K = [
+    { cielo: [242, 184, 128], sol: 70, luna: 0, est: 0, vent: 1, vap: .3, cond: 0, goteo: 0, esp: 0, hr: .62 },
+    { cielo: [196, 120, 112], sol: 150, luna: .3, est: .2, vent: 0, vap: .5, cond: 0, goteo: 0, esp: 0, hr: .72 },
+    { cielo: [52, 66, 92], sol: 230, luna: 1, est: .9, vent: 0, vap: 1, cond: .2, goteo: 0, esp: 0, hr: .86 },
+    { cielo: [36, 50, 74], sol: 260, luna: 1, est: 1, vent: 0, vap: 1, cond: .55, goteo: 0, esp: 0, hr: .95 },
+    { cielo: [36, 50, 74], sol: 260, luna: 1, est: 1, vent: 0, vap: .8, cond: 1, goteo: 1, esp: .15, hr: .98 },
+    { cielo: [58, 70, 96], sol: 260, luna: .8, est: .6, vent: 0, vap: .7, cond: 1, goteo: 1, esp: 1, hr: .99 },
+    { cielo: [238, 196, 160], sol: 150, luna: 0, est: 0, vent: 1, vap: .3, cond: .4, goteo: .2, esp: 1, hr: .8 },
+    { cielo: [190, 221, 235], sol: 70, luna: 0, est: 0, vent: 1, vap: .15, cond: 0, goteo: 0, esp: 1, hr: .58 },
+    { cielo: [36, 50, 74], sol: 260, luna: 1, est: 1, vent: 1, vap: .4, cond: .1, goteo: 0, esp: .3, hr: .8 }
+  ];
+
+  function el(tag, at, padre) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); padre.appendChild(e); return e; }
+
+  // plantas de tomate
+  var PLANTAS = [112, 172, 232, 292];
+  var HOJAS = [];
+  var gP = $("plantas");
+  PLANTAS.forEach(function (x, i) {
+    el("path", { d: "M" + x + " 232 C" + (x - 4) + " 200 " + (x + 4) + " 170 " + x + " 128", stroke: "#3E6B3A", "stroke-width": 3, fill: "none" }, gP);
+    el("line", { x1: x, y1: 128, x2: x, y2: 104, stroke: "#C8B98E", "stroke-width": 1.2 }, gP);
+    [[-16, 210, -25], [15, 196, 25], [-15, 176, -30], [14, 156, 30], [-12, 140, -35]].forEach(function (h, j) {
+      var cx = x + h[0], cy = h[1];
+      el("ellipse", { cx: cx, cy: cy, rx: 15, ry: 6.5, fill: j % 2 ? "#4F8A45" : "#5C9A50", transform: "rotate(" + h[2] + " " + cx + " " + cy + ")" }, gP);
+      HOJAS.push([cx, cy - 2]);
+    });
+    el("circle", { cx: x + 6, cy: 188 + (i % 2) * 6, r: 6, fill: "#C9472F" }, gP);
+    el("circle", { cx: x - 5, cy: 166, r: 5, fill: "#D9733A" }, gP);
+  });
+
+  // esporas sobre algunas hojas
+  var gE = $("esporas"), ESP = [];
+  HOJAS.forEach(function (h, i) {
+    if (i % 3) return;
+    var g = el("g", {}, gE);
+    var tubo = el("path", { d: "M" + h[0] + " " + h[1] + " l0 0", stroke: "#F1F1EA", "stroke-width": 1.8, "stroke-linecap": "round", fill: "none" }, g);
+    var c = el("circle", { cx: h[0], cy: h[1], r: 2.8, fill: "#B9BBB5", stroke: "#5E625C", "stroke-width": .6, opacity: 0 }, g);
+    var moho = el("circle", { cx: h[0] + 2, cy: h[1] - 1, r: 8, fill: "#B4B6AF", opacity: 0 }, g);
+    ESP.push({ h: h, tubo: tubo, c: c, moho: moho, k: i });
+  });
+
+  // vapor, gotas en el techo y gotas que caen
+  var gV = $("vapor"), VAP = [];
+  for (var i = 0; i < 30; i++) VAP.push({ e: el("circle", { r: 2.2, opacity: 0 }, gV), x: PLANTAS[i % 4] + ((i * 37) % 26) - 13, f: (i * 0.137) % 1 });
+  function techo(u) { var a = (1 - u) * (1 - u), b = 2 * (1 - u) * u, c = u * u; return [a * 40 + b * 200 + c * 360, a * 140 + b * 30 + c * 140]; }
+  var gG = $("gotas"), GOT = [];
+  for (var j = 0; j < 18; j++) { var u = 0.1 + j * 0.8 / 17, p = techo(u); GOT.push(el("ellipse", { cx: p[0], cy: p[1] + 5, rx: 0, ry: 0 }, gG)); }
+  var gC = $("caen"), CAE = [];
+  [0.3, 0.42, 0.55, 0.66, 0.78].forEach(function (u, k) { var p = techo(u); CAE.push({ e: el("ellipse", { cx: p[0], cy: p[1], rx: 1.8, ry: 2.6, opacity: 0 }, gC), x: p[0], y0: p[1] + 6, f: k * 0.23 }); });
+
+  function mezcla(a, b, f) { var o = {}; for (var k in a) o[k] = Array.isArray(a[k]) ? a[k].map(function (v, i) { return v + (b[k][i] - v) * f; }) : a[k] + (b[k] - a[k]) * f; return o; }
+  function suave(f) { return f * f * (3 - 2 * f); }
+
+  function estado(t) {
+    var i = Math.min(Math.floor(t / DUR), PASOS.length - 1);
+    var f = reducido ? 1 : suave(Math.min(1, (t - i * DUR) / (DUR * 0.6)));
+    var desde = i === 0 ? K[0] : K[i - 1];
+    return mezcla(desde, K[i], i === 0 ? 1 : f);
+  }
+
+  function dibujar(t) {
+    var s = estado(t);
+    var reloj = reducido ? 0 : t;
+    $("cielo").setAttribute("fill", "rgb(" + s.cielo.map(Math.round).join(",") + ")");
+    $("sol").setAttribute("cy", s.sol);
+    $("luna").setAttribute("opacity", s.luna);
+    $("estrellas").setAttribute("opacity", s.est);
+    $("aire").setAttribute("opacity", Math.max(0, (s.hr - .6) * .8));
+    ["vent-i", "vent-d"].forEach(function (id) { $(id).setAttribute("height", 62 - 54 * s.vent); });
+    $("corriente").setAttribute("opacity", s.vent * (s.hr < .9 ? .9 : .5));
+    $("hr-barra").setAttribute("y", 147 - 144 * s.hr);
+    $("hr-barra").setAttribute("height", 144 * s.hr);
+    var mas = s.hr > .9;
+    $("hr-barra").setAttribute("fill", mas ? "#E58A62" : "#9FD0F5");
+    $("hr-texto").textContent = mas ? "Humedad relativa, más de 90 %" : "Humedad relativa, menos de 90 %";
+
+    VAP.forEach(function (v, i) {
+      var f = (v.f + reloj * 0.12) % 1;
+      var vis = i / VAP.length < s.vap ? 1 : 0;
+      v.e.setAttribute("cx", v.x + Math.sin(f * 6 + i) * 5);
+      v.e.setAttribute("cy", 205 - f * 140);
+      v.e.setAttribute("opacity", vis * Math.sin(Math.PI * f) * .75);
+    });
+    GOT.forEach(function (g, i) { var r = s.cond * (1.6 + (i % 3) * .5); g.setAttribute("rx", r); g.setAttribute("ry", r * 1.25); });
+    CAE.forEach(function (c) {
+      var f = (c.f + reloj * 0.45) % 1;
+      c.e.setAttribute("cy", c.y0 + f * 95);
+      c.e.setAttribute("opacity", s.goteo * (f < .9 ? .95 : 0));
+    });
+    ESP.forEach(function (e, i) {
+      var g = Math.max(0, Math.min(1, s.esp * 1.4 - (i % 4) * .1));
+      e.c.setAttribute("opacity", s.esp > 0 ? 1 : 0);
+      e.tubo.setAttribute("d", "M" + e.h[0] + " " + e.h[1] + " q4 -" + (6 * g) + " " + (11 * g) + " -" + (4 * g));
+      e.moho.setAttribute("opacity", Math.max(0, g - .6) * 1.6);
+    });
+  }
+
+  // controles
+  var t = 0, jugando = false, ultimo = null, pasoMostrado = -1;
+  var iconoPlay = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  var iconoPausa = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+  var pasos = $("pasos");
+  PASOS.forEach(function (p, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.textContent = i + 1; b.setAttribute("aria-label", "Paso " + (i + 1) + ". " + p.c);
+    b.addEventListener("click", function () { ir(i * DUR + (reducido ? DUR - .01 : 0.01)); });
+    pasos.appendChild(b);
+  });
+
+  function mostrarPaso(i) {
+    if (i === pasoMostrado) return;
+    pasoMostrado = i;
+    var p = PASOS[i];
+    var html = '<p class="cuando">' + (i + 1) + " de " + PASOS.length + ". " + p.c + "</p><p>" + p.t + "</p>";
+    if (p.lisboa) {
+      html += '<div class="lisboa">' +
+        barra("Tiempo con más de 90 % de humedad, 1998", 44.2, 8.9, "%") +
+        barra("Incidencia de Botrytis, 1998", 48.3, 18.3, "%") +
+        barra("Lesiones de Botrytis por hoja, en promedio", 4.11, 1.96, "", 5) + "</div>" +
+        "<p>Con casi la misma temperatura de noche, ventilar bajó la enfermedad.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup></p>";
+    }
+    $("leyenda").innerHTML = html;
+    pasos.querySelectorAll("button").forEach(function (b, k) {
+      b.classList.toggle("hecho", k < i);
+      if (k === i) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+    });
+  }
+  function fmt(n) { return String(n).replace(".", ","); }
+  function barra(nombre, a, b, u, max) {
+    max = max || 60;
+    return "<div><h3>" + nombre + '</h3><div class="par"><span>Cerrado de noche</span><span class="b cerr" style="width:' + (a / max * 100) + '%">' + fmt(a) + (u ? " " + u : "") + '</span>' +
+      '<span>Ventilado</span><span class="b vent" style="width:' + (b / max * 100) + '%">' + fmt(b) + (u ? " " + u : "") + "</span></div></div>";
+  }
+
+  function ir(nt) {
+    t = Math.max(0, Math.min(TOTAL - 0.001, nt));
+    dibujar(t);
+    mostrarPaso(Math.floor(t / DUR));
+    $("barra").style.width = (t / TOTAL * 100) + "%";
+  }
+  function cuadro(ahora) {
+    if (!jugando) return;
+    if (ultimo !== null) {
+      var dt = (ahora - ultimo) / 1000;
+      if (reducido) {
+        var antes = Math.floor(t / DUR);
+        t += dt;
+        ir(Math.floor(t / DUR) !== antes ? Math.floor(t / DUR) * DUR + DUR - .01 : t);
+      } else ir(t + dt);
+    }
+    ultimo = ahora;
+    if (t >= TOTAL - 0.01) { pausar(); return; }
+    requestAnimationFrame(cuadro);
+  }
+  function jugar() { if (t >= TOTAL - 0.01) ir(0); jugando = true; ultimo = null; ponerBoton(); requestAnimationFrame(cuadro); }
+  function pausar() { jugando = false; ponerBoton(); }
+  function ponerBoton() { $("play").innerHTML = jugando ? iconoPausa : iconoPlay; $("play").setAttribute("aria-label", jugando ? "Pausar" : "Reproducir"); }
+  $("play").addEventListener("click", function () { jugando ? pausar() : jugar(); });
+  $("reinicio").addEventListener("click", function () { ir(0); jugar(); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) pausar(); });
+
+  ir(reducido ? DUR - .01 : 0);
+  ponerBoton();
+  if (!reducido) jugar();
+})();
+</script>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h2 id="fuentes">Fuentes</h2><ol><li id="f1">Inetti Volpi, C. S. (2018). <em>Análisis y jerarquización de factores determinantes del rendimiento del cultivo de tomate bajo invernáculo en la zona de Salto</em> [Tesis de grado, Universidad de la República]. Colibri. <a href="https://www.colibri.udelar.edu.uy/server/api/core/bitstreams/e5299935-8f67-4019-8628-9eb94badb5c3/content">https://www.colibri.udelar.edu.uy/server/api/core/bitstreams/e5299935-8f67-4019-8628-9eb94badb5c3/content</a></li><li id="f2">Dirección General de la Granja, Facultad de Agronomía e Instituto Nacional de Investigación Agropecuaria. (2018). <em>Normas para la producción integrada de tomate bajo invernáculo: Zona Sur. Actualización 2018</em>. <a href="https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf">https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf</a></li><li id="f3">Baptista, F. J. F. (2007). <em>Modelling the climate in unheated tomato greenhouses and predicting Botrytis cinerea infection</em> [Tesis doctoral, Universidade de Évora]. <a href="https://dspace.uevora.pt/rdpc/bitstream/10174/1724/1/PhD%20Thesis_FBaptista2007.pdf">https://dspace.uevora.pt/rdpc/bitstream/10174/1724/1/PhD%20Thesis_FBaptista2007.pdf</a></li><li id="f4">Bernal, R. (2010). <em>Enfermedades de tomate (Lycopersicum esculentum Mill.) en invernadero en las zonas de Salto y Bella Unión</em> (Serie Técnica N.º 181). INIA. <a href="https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf">https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf</a></li><li id="f5">Buriol, G. A., Righi, E. Z., Schneider, F. M., Streck, N. A., Heldwein, A. B. y Estefanel, V. (2000). Modificação da umidade relativa do ar pelo uso e manejo da estufa plástica. <em>Revista Brasileira de Agrometeorologia, 8</em>(1), 11–18. <a href="https://archivum.grupomarista.org.br/pergamumweb/vinculos//000076/000076e1.pdf">https://archivum.grupomarista.org.br/pergamumweb/vinculos//000076/000076e1.pdf</a></li></ol><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('../sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>

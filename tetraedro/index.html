@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Armá el tetraedro | Invisibles y hambrientos</title>
+<meta name="description" content="Interactivo. Mové la temperatura, la humedad y la hoja mojada y mirá qué enfermedades de las hortalizas encuentran lo que necesitan.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="../img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.tetra-cabeza { display: grid; gap: 8px; align-items: center; }
+.tetra-svg { width: 100%; max-width: 300px; margin: 0 auto; display: block; }
+.tetra-svg .arista { stroke: var(--carbon); stroke-width: 1.6; fill: none; transition: stroke .3s; }
+.tetra-svg .arista.atras { stroke-dasharray: 4 4; stroke: #8A949B; }
+.tetra-svg .arista.activa { stroke: var(--terra); stroke-width: 2.6; }
+.tetra-svg circle { stroke: var(--carbon); stroke-width: 2; fill: var(--papel); transition: fill .3s; }
+.tetra-svg circle.si { fill: var(--verde); }
+.tetra-svg circle.medio { fill: #E9B9A3; }
+.tetra-svg circle.alto { fill: var(--terra); }
+.tetra-svg text { font-family: var(--titulos); font-size: 13px; font-weight: 700; fill: var(--carbon); }
+.tetra-svg text.chico { font-size: 10.5px; font-weight: 500; fill: var(--apagado); }
+.juego { display: grid; gap: 28px; margin-top: 8px; }
+.panel { background: var(--papel); border: 1px solid var(--linea); border-radius: 18px; padding: 20px 18px 8px; }
+.panel h2 { font-size: 1.25rem; }
+.interruptores { display: grid; gap: 8px; margin: 0 0 1.2rem; padding: 0; border: 0; }
+.interruptores legend { font-family: var(--titulos); font-weight: 650; margin-bottom: .45rem; padding: 0; }
+.interruptor { display: flex; align-items: center; gap: 12px; min-height: 44px; font-family: var(--titulos); font-size: .98rem; font-weight: 550; cursor: pointer; }
+.interruptor input { width: 24px; height: 24px; accent-color: var(--verde); flex: none; margin: 0; }
+.resumen { font-family: var(--titulos); font-size: 1.15rem; font-weight: 700; margin: 0 0 1rem; }
+.resumen b { color: var(--terra-texto); font-size: 1.6rem; }
+.enf { display: grid; grid-template-columns: 56px 1fr; gap: 14px; padding: 14px 0; border-top: 1px solid var(--linea); }
+.enf .lupa { width: 56px; height: 56px; }
+.enf h3 { margin: 0 0 .3rem; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.enf p { font-size: 1rem; line-height: 1.5; margin: 0 0 .45rem; }
+.sello { font-family: var(--titulos); font-size: .78rem; font-weight: 700; padding: .2em .6em; border-radius: 999px; }
+.n2 .sello { background: var(--terra); color: #fff; }
+.n1 .sello { background: var(--terra-claro); color: var(--terra-texto); }
+.hacer { color: var(--verde-hondo); }
+.hacer b { font-family: var(--titulos); }
+.flota { position: sticky; bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 0 -6px 12px; padding: 12px 16px; border-radius: 14px; background: var(--carbon); color: #fff; font-family: var(--titulos); font-weight: 650; text-decoration: none; box-shadow: 0 4px 14px rgba(51,63,72,.25); }
+.flota:hover { color: #fff; }
+.flota b { color: #F2B39A; font-size: 1.3rem; }
+.vacio { color: var(--apagado); font-size: 1rem; border-top: 1px solid var(--linea); padding-top: 14px; }
+@media (min-width: 860px) {
+  .flota { display: none; }
+  .tetra-cabeza { grid-template-columns: 1.4fr 1fr; gap: 32px; }
+  .juego { grid-template-columns: 1fr 1.15fr; align-items: start; }
+  .resultados { position: sticky; top: 16px; }
+}
+</style>
+</head>
+<body>
+<header class="tope"><a class="volver" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a><span class="marca">Invisibles y hambrientos</span></header>
+<main id="contenido">
+
+
+<div class="envoltura ancha">
+  <header class="cabeza tetra-cabeza">
+    <div>
+      <span class="pagina">Página 4 del informe</span>
+      <h1>Armá el tetraedro</h1>
+      <p class="bajada">Una hortaliza se enferma cuando coinciden un patógeno, una planta que puede enfermarse y un ambiente favorable. El cuarto vértice somos nosotros, que cambiamos a los otros tres.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup></p>
+      <p>Acá suponemos que la planta es susceptible y que el patógeno anda cerca. Vos movés el ambiente y las decisiones de la persona que cultiva.</p>
+    </div>
+    <svg class="tetra-svg" viewBox="0 0 260 215" role="img" aria-labelledby="tt-titulo">
+      <title id="tt-titulo">Tetraedro de la enfermedad. Patógeno, hospedero y ambiente en la base y el ser humano arriba.</title>
+      <line class="arista atras" x1="34" y1="150" x2="226" y2="150"/>
+      <line class="arista base" x1="34" y1="150" x2="140" y2="192"/>
+      <line class="arista base" x1="226" y1="150" x2="140" y2="192"/>
+      <line class="arista sube" x1="130" y1="26" x2="34" y2="150"/>
+      <line class="arista sube" x1="130" y1="26" x2="226" y2="150"/>
+      <line class="arista sube" x1="130" y1="26" x2="140" y2="192"/>
+      <circle id="v-humano" cx="130" cy="26" r="11"/>
+      <circle id="v-ambiente" cx="34" cy="150" r="11"/>
+      <circle class="si" cx="226" cy="150" r="11"/>
+      <circle class="si" cx="140" cy="192" r="11"/>
+      <text x="150" y="22">Ser humano</text>
+      <text x="6" y="178">Ambiente</text>
+      <text x="256" y="178" text-anchor="end">Hospedero</text>
+      <text x="158" y="207">Patógeno</text>
+    </svg>
+  </header>
+
+  <p class="aviso">Es un juego para aprender, no un diagnóstico. Usa solo umbrales que aparecen en las fuentes del informe. Si una planta tiene síntomas que no reconocés, consultá a un técnico antes de aplicar nada.</p>
+
+  <div class="juego">
+    <form class="panel" id="controles" onsubmit="return false">
+      <h2>El ambiente</h2>
+      <div class="campo">
+        <label for="t">Temperatura media <output id="t-v" for="t">17 °C</output></label>
+        <input type="range" id="t" min="0" max="40" step="1" value="17">
+      </div>
+      <div class="campo">
+        <label for="hr">Humedad relativa <output id="hr-v" for="hr">92 %</output></label>
+        <input type="range" id="hr" min="40" max="100" step="1" value="92" aria-describedby="hr-a">
+        <p class="ayuda" id="hr-a">Cuánto vapor tiene el aire comparado con el máximo posible a esa temperatura.</p>
+      </div>
+      <div class="campo">
+        <label for="mo">Horas de hoja mojada <output id="mo-v" for="mo">0 h</output></label>
+        <input type="range" id="mo" min="0" max="48" step="1" value="0" aria-describedby="mo-a">
+        <p class="ayuda" id="mo-a">Por lluvia, rocío, neblina o riego por aspersión.</p>
+      </div>
+
+      <h2>Las decisiones</h2>
+      <fieldset class="opciones campo">
+        <legend>Dónde está el cultivo</legend>
+        <label><input type="radio" name="lugar" value="campo"><span>A campo</span></label>
+        <label><input type="radio" name="lugar" value="cerrado" checked><span>Invernáculo cerrado de noche</span></label>
+        <label><input type="radio" name="lugar" value="ventilado"><span>Invernáculo ventilado de noche</span></label>
+      </fieldset>
+      <fieldset class="interruptores">
+        <legend>Marcá lo que pasa en tu cultivo</legend>
+        <label class="interruptor"><input type="checkbox" id="suelo">Mismo cultivo en el mismo suelo varios años</label>
+        <label class="interruptor"><input type="checkbox" id="malla">Plantines hechos sin malla antiinsectos</label>
+        <label class="interruptor"><input type="checkbox" id="charco">Agua encharcada en el cantero</label>
+        <label class="interruptor"><input type="checkbox" id="tijera">Desbrote con tijera sin desinfectar</label>
+      </fieldset>
+      <a class="flota" id="flota" href="#res-titulo"></a>
+    </form>
+
+    <section class="panel resultados" aria-labelledby="res-titulo">
+      <h2 id="res-titulo">Resultado</h2>
+      <p class="resumen" id="resumen" aria-live="polite"></p>
+      <div id="lista"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var RAIZ = "../";
+
+  var ENF = [
+    { n: "Moho gris", f: "foto-botrytis-cinerea.jpg",
+      ev: function (s) {
+        if (s.hr <= 90 || s.t < 0.8 || s.t > 35) return null;
+        var nv = (s.t >= 18 && s.t <= 23) ? 2 : 1;
+        var t = ["Sus esporas germinan con más de 90 % de humedad relativa.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>"];
+        t.push(nv === 2 ? "Además estás entre 18 y 23 °C, donde mejor germinan.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>" : "Crece entre 0,8 y 35 °C, aunque germina mejor entre 18 y 23 °C.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a>,<a href='#f2' aria-label='Fuente 2'>2</a></sup>");
+        if (s.lugar === "ventilado") { nv = 1; t.push("Ventilar de noche ayuda. En Lisboa bajó la incidencia de Botrytis de 48,3 % a 18,3 %.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>"); }
+        if (s.lugar === "cerrado") t.push("El invernáculo cerrado de noche junta justo esa humedad.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>");
+        return { nv: nv, t: t };
+      },
+      hacer: "Ventilar, deshojar y no regar tarde.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>" },
+    { n: "Tizón tardío", f: "foto-phytophthora-infestans.jpg",
+      ev: function (s) {
+        if (!(s.t >= 3 && s.t < 18 && s.mo >= 1)) return null;
+        var t = ["Con menos de 18 °C y agua sobre las hojas, las normas de producción integrada piden tratarlo en forma preventiva.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>",
+                 "Sus zoosporas nadan en el agua de la hoja hasta los estomas, los poros de la hoja.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a></sup>"];
+        var nv = 2;
+        if (s.lugar !== "campo") { nv = 1; t.push("Bajo techo casi no aparece, porque no llueve sobre las plantas.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>"); }
+        return { nv: nv, t: t };
+      },
+      hacer: "Rotar de 2 a 3 años, sacar descartes y plantas guachas y no regar por aspersión.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a>,<a href='#f5' aria-label='Fuente 5'>5</a></sup>" },
+    { n: "Mildiu de las cucurbitáceas", f: "foto-pseudoperonospora-cubensis.jpg",
+      ev: function (s) {
+        if (!(s.mo >= 2 && s.t >= 5 && s.t <= 28)) return null;
+        var cerca = s.t >= 14 && s.t <= 16;
+        return { nv: cerca ? 2 : 1, t: ["Con mucho inóculo le alcanzan 2 horas de hoja mojada a 15 °C para infectar zapallos, pepinos y melones.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>",
+          cerca ? "Estás cerca de esos 15 °C." : "Puede infectar entre 5 y 28 °C, pero lejos de los 15 °C necesita más horas de hoja mojada.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>"] };
+      },
+      hacer: "Canteros altos, ventilar, nada de aspersión y lejos de cultivos ya plantados.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup>" },
+    { n: "Mildiu de la lechuga", f: "foto-bremia-lactucae.jpg",
+      ev: function (s) {
+        if (!(s.mo >= 5 && s.t >= 4.5 && s.t <= 15.5)) return null;
+        return { nv: 2, t: ["Lo favorecen noches de 4,5 a 15,5 °C con 5 a 7 horas de hoja mojada.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a></sup>", "En 24 a 48 horas aparece una pelusa blanca en el envés.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a></sup>"] };
+      },
+      hacer: "Variedades resistentes, riego por goteo y plantines protegidos.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a>,<a href='#f10' aria-label='Fuente 10'>10</a></sup>" },
+    { n: "Mildiu de la cebolla", f: "foto-peronospora-destructor.jpg",
+      ev: function (s) {
+        if (s.lugar !== "campo" || !(s.hr > 95 && s.t >= 4 && s.t <= 23)) return null;
+        return { nv: 2, t: ["Lo favorecen madrugadas con más de 95 % de humedad, días de menos de 23 °C y noches de 4 a 24 °C.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup>", "No hace falta lluvia. Los focos aparecen donde el rocío dura más.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup>"] };
+      },
+      hacer: "Plantines sanos, rotar 2 años y aplicar según el pronóstico de mildiu.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup>" },
+    { n: "Moho blanco", f: "foto-sclerotinia.jpg",
+      ev: function (s) {
+        if (!(s.mo >= 16 && s.t >= 12 && s.t < 20)) return null;
+        return { nv: 2, t: ["Lo favorecen menos de 20 °C con rocío o neblina largos.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup>", "Sus esporas infectan con 16 a 48 horas de hoja mojada.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a></sup>"] };
+      },
+      hacer: "Rotar de 3 a 5 años, regar lo justo y sacar las plantas enfermas.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a>,<a href='#f8' aria-label='Fuente 8'>8</a></sup>" },
+    { n: "Phytophthora del morrón", f: "foto-phytophthora-capsici.jpg",
+      ev: function (s) {
+        if (!(s.charco && s.t >= 27 && s.t <= 32)) return null;
+        return { nv: 2, t: ["Con 27 a 32 °C y agua libre en el cantero produce zoosporas e infecta mejor.<sup class='r'><a href='#f13' aria-label='Fuente 13'>13</a></sup>", "En un invernáculo de morrón del sur mató al 64,7 % de las plantas.<sup class='r'><a href='#f13' aria-label='Fuente 13'>13</a></sup>"] };
+      },
+      hacer: "Suelo drenado, canteros altos y riego según lo que pide el cultivo.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a>,<a href='#f13' aria-label='Fuente 13'>13</a></sup>" },
+    { n: "Mancha bacteriana", f: "foto-xanthomonas.jpg",
+      ev: function (s) {
+        if (!(s.mo >= 24 && s.t >= 23 && s.t <= 35)) return null;
+        var t = ["Le alcanzan 100 % de humedad durante 24 horas o más con 23 a 35 °C, como en un verano lluvioso.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>"];
+        var nv = 2;
+        if (s.lugar !== "campo") { nv = 1; t.push("Bajo nylon casi no aparece, salvo que el plástico se rompa.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>"); }
+        return { nv: nv, t: t };
+      },
+      hacer: "Regar sin mojar las hojas, no tocar plantas mojadas y usar cobre preventivo.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>" },
+    { n: "Oídio del morrón", f: "foto-leveillula-taurica.jpg",
+      ev: function (s) {
+        if (s.t < 10 || s.t > 35) return null;
+        var techo = s.lugar !== "campo";
+        var optimo = s.t >= 15 && s.t <= 25;
+        if (!optimo && !techo) return null;
+        return { nv: optimo && techo ? 2 : 1, t: ["Ataca entre 10 y 35 °C y sus esporas germinan mejor entre 15 y 25 °C, con casi cualquier humedad.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup>",
+          "En Salto y Bella Unión es de lo que más daña al morrón de invernáculo.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup>"] };
+      },
+      hacer: "Sacar malezas, revisar desde el inicio y aplicar en forma preventiva.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup>" },
+    { n: "Peste negra", f: "foto-tswv.jpg",
+      ev: function (s) {
+        if (!(s.malla || s.t >= 25)) return null;
+        var t = [];
+        if (s.t >= 25) t.push("Con medias de 25 °C o más los trips llegan al máximo en los invernáculos de morrón de Canelones. Ellos llevan el virus.<sup class='r'><a href='#f15' aria-label='Fuente 15'>15</a></sup>");
+        if (s.malla) t.push("En Canelones la infección apareció primero en plantas de almácigos sin malla.<sup class='r'><a href='#f15' aria-label='Fuente 15'>15</a></sup>");
+        if (s.t > 28) t.push("Con más de 28 °C funciona mal el gen Tsw, que protege al morrón.<sup class='r'><a href='#f15' aria-label='Fuente 15'>15</a></sup>");
+        return { nv: s.malla ? 2 : 1, t: t };
+      },
+      hacer: "Almácigo bajo malla, malezas controladas y arrancar las plantas con síntomas.<sup class='r'><a href='#f15' aria-label='Fuente 15'>15</a></sup>" },
+    { n: "Nematodo de agallas", f: "foto-meloidogyne.jpg",
+      ev: function (s) {
+        if (!s.suelo) return null;
+        var t = ["Ataca con el suelo entre 15 y 30 °C cuando se repite el cultivo en el mismo suelo.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a>,<a href='#f16' aria-label='Fuente 16'>16</a></sup>",
+                 "Repetir el cultivo también acumula enfermedades de raíz.<sup class='r'><a href='#f17' aria-label='Fuente 17'>17</a></sup>"];
+        if (s.t > 28) t.push("Con el suelo a más de 28 °C falla el gen Mi, que da resistencia al tomate.<sup class='r'><a href='#f18' aria-label='Fuente 18'>18</a></sup>");
+        t.push("Para simplificar, acá la temperatura del aire hace de temperatura del suelo.");
+        return { nv: (s.t >= 15 && s.t <= 30) ? 2 : 1, t: t };
+      },
+      hacer: "Solarizar entre mediados de diciembre y fines de enero.<sup class='r'><a href='#f17' aria-label='Fuente 17'>17</a></sup>" },
+    { n: "Cancro bacteriano", f: "foto-clavibacter-michiganensis.jpg",
+      ev: function (s) {
+        if (!s.tijera) return null;
+        var t = ["La bacteria viaja en semillas, manos y tijeras.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a>,<a href='#f19' aria-label='Fuente 19'>19</a></sup> En un ensayo de INIA, desbrotar sin desinfectar enfermó a más del 85 % de las plantas.<sup class='r'><a href='#f20' aria-label='Fuente 20'>20</a></sup>"];
+        var nv = 1;
+        if (s.t >= 24 && s.t <= 32) { nv = 2; t.push("Además estás entre 24 y 32 °C, el rango que la favorece.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>"); }
+        return { nv: nv, t: t };
+      },
+      hacer: "Tijera con hipoclorito al 1 % de cloro activo. En ese ensayo evitó los síntomas.<sup class='r'><a href='#f20' aria-label='Fuente 20'>20</a></sup>" }
+  ];
+
+  function leer() {
+    return {
+      t: +$("t").value, hr: +$("hr").value, mo: +$("mo").value,
+      lugar: document.querySelector("input[name=lugar]:checked").value,
+      suelo: $("suelo").checked, malla: $("malla").checked, charco: $("charco").checked, tijera: $("tijera").checked
+    };
+  }
+
+  function pintarRango(el) {
+    var p = (el.value - el.min) / (el.max - el.min) * 100;
+    el.style.setProperty("--p", p + "%");
+  }
+
+  function actualizar() {
+    var s = leer();
+    $("t-v").textContent = s.t + " °C";
+    $("hr-v").textContent = s.hr + " %";
+    $("mo-v").textContent = s.mo + " h";
+    ["t", "hr", "mo"].forEach(function (id) { pintarRango($(id)); });
+
+    var res = [];
+    ENF.forEach(function (e) { var r = e.ev(s); if (r) res.push({ e: e, r: r }); });
+    res.sort(function (a, b) { return b.r.nv - a.r.nv; });
+
+    var altos = res.filter(function (x) { return x.r.nv === 2; }).length;
+    $("resumen").innerHTML = res.length === 0
+      ? "Con este ambiente ninguna de la lista encuentra lo que necesita."
+      : "<b>" + res.length + "</b> " + (res.length === 1 ? "enfermedad encuentra" : "enfermedades encuentran") + " lo que necesitan" + (altos ? ", " + altos + " con todo a favor." : ".");
+
+    $("lista").innerHTML = res.length === 0
+      ? '<p class="vacio">Probá subir la humedad, sumar horas de hoja mojada o marcar alguna decisión.</p>'
+      : res.map(function (x) {
+          return '<article class="enf n' + x.r.nv + '"><img class="lupa" src="' + RAIZ + 'img/' + x.e.f + '" alt="" width="56" height="56" loading="lazy">' +
+            '<div><h3>' + x.e.n + ' <span class="sello">' + (x.r.nv === 2 ? "Todo a favor" : "Puede aparecer") + '</span></h3>' +
+            x.r.t.map(function (p) { return "<p>" + p + "</p>"; }).join("") +
+            '<p class="hacer"><b>Qué hacer.</b> ' + x.e.hacer + '</p></div></article>';
+        }).join("");
+
+    $("flota").innerHTML = "<span><b>" + res.length + "</b> " + (res.length === 1 ? "enfermedad" : "enfermedades") + " con este ambiente</span><span>Ver</span>";
+    var amb = $("v-ambiente");
+    amb.setAttribute("class", altos ? "alto" : (res.length ? "medio" : ""));
+    var humano = s.lugar !== "campo" || s.suelo || s.malla || s.charco || s.tijera;
+    $("v-humano").setAttribute("class", humano ? "si" : "");
+    document.querySelectorAll(".tetra-svg .base").forEach(function (l) { l.classList.toggle("activa", altos > 0); });
+  }
+
+  document.getElementById("controles").addEventListener("input", actualizar);
+  document.getElementById("controles").addEventListener("change", actualizar);
+  actualizar();
+})();
+</script>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h2 id="fuentes">Fuentes</h2><ol><li id="f1">Francl, L. J. (2001). The disease triangle: a plant pathological paradigm revisited. <em>The Plant Health Instructor</em>. <a href="https://doi.org/10.1094/PHI-T-2001-0517-01">https://doi.org/10.1094/PHI-T-2001-0517-01</a></li><li id="f2">Bernal, R. (2010). <em>Enfermedades de tomate (Lycopersicum esculentum Mill.) en invernadero en las zonas de Salto y Bella Unión</em> (Serie Técnica N.º 181). INIA. <a href="https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf">https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf</a></li><li id="f3">Giménez Martínez, G. J. y Silvera Brunetto, N. J. (2023). <em>Caracterización y selección de aislados de Clonostachys spp. para el control biológico del moho gris en tomate</em> [Trabajo final de grado, Universidad de la República]. <a href="http://tesis.fagro.edu.uy/index.php/tg/catalog/download/122/71/2063?inline=1">http://tesis.fagro.edu.uy/index.php/tg/catalog/download/122/71/2063?inline=1</a></li><li id="f4">Baptista, F. J. F. (2007). <em>Modelling the climate in unheated tomato greenhouses and predicting Botrytis cinerea infection</em> [Tesis doctoral, Universidade de Évora]. <a href="https://dspace.uevora.pt/rdpc/bitstream/10174/1724/1/PhD%20Thesis_FBaptista2007.pdf">https://dspace.uevora.pt/rdpc/bitstream/10174/1724/1/PhD%20Thesis_FBaptista2007.pdf</a></li><li id="f5">Dirección General de la Granja, Facultad de Agronomía e Instituto Nacional de Investigación Agropecuaria. (2018). <em>Normas para la producción integrada de tomate bajo invernáculo: Zona Sur. Actualización 2018</em>. <a href="https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf">https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf</a></li><li id="f6">Ristaino, J., Schumann, G. L. y D'Arcy, C. J. (2000). Late blight of potato and tomato. <em>The Plant Health Instructor</em>. <a href="https://doi.org/10.1094/PHI-I-2000-0724-01">https://doi.org/10.1094/PHI-I-2000-0724-01</a></li><li id="f7">Savory, E. A., Granke, L. L., Quesada-Ocampo, L. M., Varbanova, M., Hausbeck, M. K. y Day, B. (2011). The cucurbit downy mildew pathogen Pseudoperonospora cubensis. <em>Molecular Plant Pathology, 12</em>(3), 217–226. <a href="https://doi.org/10.1111/j.1364-3703.2010.00670.x">https://doi.org/10.1111/j.1364-3703.2010.00670.x</a></li><li id="f8">Cassanello Costabel, M. E., Núñez Milán, C. A. y Scattolini Rimada, Á. (2006). <em>Enfermedades de las cucurbitáceas en el Litoral Norte de Uruguay</em>. Facultad de Agronomía, Universidad de la República. <a href="https://www.colibri.udelar.edu.uy/items/48ccbd6d-a868-439b-9d42-9a07867cf702">https://www.colibri.udelar.edu.uy/items/48ccbd6d-a868-439b-9d42-9a07867cf702</a></li><li id="f9">Rodrigues-Porto, L., Raid, R. N. y Sandoya, G. V. (2021). <em>Downy mildew of lettuce in Florida</em> (HS1403). UF/IFAS Extension. <a href="https://ask.ifas.ufl.edu/publication/HS1403">https://ask.ifas.ufl.edu/publication/HS1403</a></li><li id="f10">University of California Statewide Integrated Pest Management Program. (s.f.-f). <em>Downy mildew / Lettuce</em> (UC IPM Pest Management Guidelines: Lettuce). UC Statewide IPM Program. <a href="https://ipm.ucanr.edu/agriculture/lettuce/downy-mildew/">https://ipm.ucanr.edu/agriculture/lettuce/downy-mildew/</a></li><li id="f11">Arboleya, J., Maeso, D., Campelo, E., Paullier, J. y Giménez, G. (Eds.). (2013). <em>Producción integrada de cebolla</em> (Boletín de Divulgación N.º 105). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-06/bd-105-2013.pdf">https://www.inia.uy/sites/default/files/publications/2024-06/bd-105-2013.pdf</a></li><li id="f12">Heffer Link, V. y Johnson, K. B. (2007). White mold. <em>The Plant Health Instructor</em>. <a href="https://doi.org/10.1094/PHI-I-2007-0809-01">https://doi.org/10.1094/PHI-I-2007-0809-01</a></li><li id="f13">Cazzulo Leal, Y. y Geraldi Amestoy, E. (2017). <em>Agentes asociados a muerte de plantas de morrón (Capsicum annuum L.) en cultivos protegidos en el sur de Uruguay, relacionados a diferentes medidas de manejo</em> [Tesis de grado, Universidad de la República]. Colibri. <a href="https://www.colibri.udelar.edu.uy/server/api/core/bitstreams/f45a932d-a78e-4f85-85ea-2c70e582beba/content">https://www.colibri.udelar.edu.uy/server/api/core/bitstreams/f45a932d-a78e-4f85-85ea-2c70e582beba/content</a></li><li id="f14">Bernal, R. (2006). <em>Oidio del pimiento en la zona norte de Uruguay</em> (Hoja de Divulgación N.º 94). INIA. <a href="https://inia.uy/sites/default/files/publications/2025-11/hd-94-2006.pdf">https://inia.uy/sites/default/files/publications/2025-11/hd-94-2006.pdf</a></li><li id="f15">Maeso, D., Paullier, J., González, P., Arboleya, J., Fernández, A. y Walasek, W. (2015b). Seguimiento de 'peste negra' en morrón: Experimentos en la zona sur de Uruguay. Ciclo 2013-2014. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 92–107). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li><li id="f16">Piedra Buena, A., Díez-Rojo, M. A., Bello, A., Robertson, L., López-Pérez, J. A., Escuer, M. y de León, L. (2005). Comportamiento de Meloidogyne incognita sobre tomate y pimiento resistente en Uruguay. <em>Nematropica, 35</em>(2), 111–120. <a href="https://journals.flvc.org/nematropica/article/view/69718/67378">https://journals.flvc.org/nematropica/article/view/69718/67378</a></li><li id="f17">Rubio, L., Bernal, R., Arboleya, J. y Maeso, D. (2023). Alternativas para el manejo de patógenos de suelos en los sistemas hortícolas. En G. P. García-Inza, J. M. Paruelo y R. Zoppolo (Eds.), <em>Aportes científicos y tecnológicos del Instituto Nacional de Investigación Agropecuaria (INIA) del Uruguay a las trayectorias agroecológicas</em> (pp. 95–106). Ediciones CICCUS. <a href="https://inia.uy/sites/default/files/publications/2024-10/Rubio-L.-et.al-Capitulo-5.pdf">https://inia.uy/sites/default/files/publications/2024-10/Rubio-L.-et.al-Capitulo-5.pdf</a></li><li id="f18">González-Arcos, M., Manzzioni, A., Arruabarrena, A., Lado, J., Laxague, J. I., Vicente, E., Giambiasi, M., Moltini, A. I., Lenzi, A. y Giménez, G. (2019). <em>Cultivar híbrido de tomate 'INIA Frontera' (HT72)</em> (Hoja de Divulgación N.º 110). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/HD-110-Tomate-octubre-2019.pdf">https://inia.uy/sites/default/files/publications/2024-10/HD-110-Tomate-octubre-2019.pdf</a></li><li id="f19">Siri, M. I., Croce, V., Lapaz, M. I., Hernández, F., Montelongo, M. J., González, M., Maeso, D. y Pianzzola, M. J. (2015). Identificación, caracterización y diagnóstico molecular de bacterias patógenas que afectan a los cultivos de tomate. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 3–16). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li><li id="f20">Maeso, D., Walasek, W. y Fernández, A. (2015a). Evaluación de desinfectantes para prevenir la trasmisión de Clavibacter michiganensis subsp. michiganensis en tomate mediante tijeras de poda. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 24–31). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li></ol><h3>Fotos</h3><ul><li><b>Moho gris</b>. Foto de Rasbak at Dutch Wikipedia, <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Botrytis_tomaat.jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de la lechuga</b>. Foto de Gerald Holmes, Strawberry Center, Cal Poly San Luis Obispo, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/5608244">IPM Images</a>.</li><li><b>Cancro bacteriano</b>. Foto de Scot Nelson, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Bacterial_canker_of_tomato_caused_by_Corynebacterium_michiganense_pv._michiganense_(9777392932).jpg">Wikimedia Commons</a>.</li><li><b>Oídio</b>. Foto de Dr. Parthasarathy Seethapathy, Amrita School of Agricultural Sciences, Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:5573619-PPT-powdery_mildew_(Leveillula_taurica).jpg">Wikimedia Commons</a>.</li><li><b>Nematodo de agallas</b>. Foto de Plant pests and diseases, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_(Solanum_lycopersicum)-_Galling_from_root-knot_nematodes.jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de la cebolla</b>. Foto de Jochen Kreiselmaier, DLR Rheinpfalz, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Falscher_Mehltau_2_(Peronospora_destructor)-DLR-NW-jk.jpg">Wikimedia Commons</a>.</li><li><b>Phytophthora del morrón</b>. Foto de Edward Sikora, Auburn University, Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0/us/deed.en">CC BY 3.0 US</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Capsicum_annuum_with_Phytophthora_capsici.jpg">Wikimedia Commons</a>.</li><li><b>Tizón tardío</b>. Foto de Scot Nelson from Honolulu, Hawaii, USA, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_late_blight_leaf_sporulating_lesions_1_(5816170621).jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de las cucurbitáceas</b>. Foto de Christian Hummert (Ixitixel), <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Falscher_Mehltau.jpg">Wikimedia Commons</a>.</li><li><b>Moho blanco</b>. Foto de Gerald Holmes, Strawberry Center, Cal Poly San Luis Obispo, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/5604267">IPM Images</a>.</li><li><b>Peste negra</b>. Foto de William M. Brown Jr., Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_spotted_wilt_virus_5356805-PPT.png">Wikimedia Commons</a>.</li><li><b>Mancha bacteriana</b>. Foto de Edward Sikora, Auburn University, <a href="https://creativecommons.org/licenses/by/3.0/us/">CC BY 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/1568045">IPM Images</a>.</li></ul><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('../sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>

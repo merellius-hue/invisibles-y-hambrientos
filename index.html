@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invisibles y hambrientos</title>
+<meta name="description" content="Material interactivo propio del informe sobre los patógenos de las hortalizas en Uruguay, de Joaquín Merello Silva.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="estilo.css">
+<style>
+.portada { padding: 28px 0 8px; }
+.portada .autor { font-family: var(--titulos); font-size: .98rem; color: var(--apagado); margin-bottom: 1.4rem; }
+.portada h1 {
+  font-size: clamp(3.1rem, 17vw, 7.4rem); font-stretch: 68%; font-weight: 800;
+  line-height: .86; letter-spacing: -.025em; margin: 0 0 1.2rem;
+}
+.portada h1 span { display: block; }
+.portada h1 .y { font-family: var(--texto); font-style: italic; font-weight: 400; font-stretch: normal; font-size: .42em; letter-spacing: 0; line-height: 1.2; color: var(--verde); }
+.portada .bajada { max-width: 34rem; }
+.muestras {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 26rem;
+  margin: 1.6rem 0 .6rem; padding: 0; list-style: none;
+}
+.muestras img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover;
+  border: 2px solid var(--papel); box-shadow: 0 0 0 1.5px var(--carbon); }
+.muestras-nota { font-size: .95rem; color: var(--apagado); }
+.piezas { list-style: none; margin: 2.2rem 0 0; padding: 0; border-top: 2px solid var(--carbon); }
+.piezas li { border-bottom: 1px solid var(--linea); }
+.piezas a {
+  display: grid; grid-template-columns: 72px 1fr; gap: 16px; align-items: center;
+  padding: 18px 4px; text-decoration: none; color: var(--carbon);
+}
+.piezas a:hover h2, .piezas a:focus-visible h2 { color: var(--verde); }
+.piezas .lupa { width: 72px; height: 72px; }
+.piezas .lupa.icono { display: grid; place-items: center; background: var(--verde-claro); }
+.piezas .lupa.icono svg { width: 34px; height: 34px; color: var(--verde-hondo); }
+.piezas h2 { font-size: 1.45rem; margin: 0 0 .2rem; }
+.piezas p { margin: 0; font-size: 1.02rem; line-height: 1.45; }
+.piezas .dato { font-family: var(--titulos); font-size: .86rem; color: var(--apagado); margin-top: .35rem; }
+@media (min-width: 760px) {
+  .portada { display: grid; grid-template-columns: 1.25fr 1fr; gap: 40px; align-items: end; padding-top: 56px; }
+  .muestras { margin: 0 0 .6rem; }
+  .piezas { display: grid; grid-template-columns: 1fr 1fr; column-gap: 40px; }
+}
+</style>
+</head>
+<body>
+
+<main id="contenido">
+
+
+<div class="envoltura ancha">
+  <section class="portada" aria-labelledby="titulo">
+    <div>
+      <p class="autor">Joaquín Merello Silva, 2.º B, Escuela Agraria Florida</p>
+      <h1 id="titulo"><span>Invisibles</span><span class="y">y</span><span>hambrientos</span></h1>
+      <p class="bajada">Material propio del informe sobre los patógenos de las hortalizas en Uruguay. Cada código QR del informe impreso lleva a una de estas piezas.</p>
+    </div>
+    <div>
+      <ul class="muestras" aria-label="Los quince patógenos del informe">
+        <li><img src="img/foto-phytophthora-infestans.jpg" alt="Tizón tardío" width="80" height="80"></li>
+        <li><img src="img/foto-botrytis-cinerea.jpg" alt="Moho gris" width="80" height="80"></li>
+        <li><img src="img/foto-leveillula-taurica.jpg" alt="Oídio" width="80" height="80"></li>
+        <li><img src="img/foto-pseudoperonospora-cubensis.jpg" alt="Mildiu de las cucurbitáceas" width="80" height="80"></li>
+        <li><img src="img/foto-bremia-lactucae.jpg" alt="Mildiu de la lechuga" width="80" height="80"></li>
+        <li><img src="img/foto-peronospora-destructor.jpg" alt="Mildiu de la cebolla" width="80" height="80"></li>
+        <li><img src="img/foto-sclerotinia.jpg" alt="Moho blanco" width="80" height="80"></li>
+        <li><img src="img/foto-phytophthora-capsici.jpg" alt="Phytophthora del morrón" width="80" height="80"></li>
+        <li><img src="img/foto-fusarium-oxysporum.jpg" alt="Fusarium" width="80" height="80"></li>
+        <li><img src="img/foto-clavibacter-michiganensis.jpg" alt="Cancro bacteriano" width="80" height="80"></li>
+        <li><img src="img/foto-xanthomonas.jpg" alt="Mancha bacteriana" width="80" height="80"></li>
+        <li><img src="img/foto-tswv.jpg" alt="Peste negra" width="80" height="80"></li>
+        <li><img src="img/foto-zymv.jpg" alt="Virosis de cucurbitáceas" width="80" height="80"></li>
+        <li><img src="img/foto-meloidogyne.jpg" alt="Nematodo de agallas" width="80" height="80"></li>
+        <li><img src="img/foto-damping-off.jpg" alt="Damping-off" width="80" height="80"></li>
+      </ul>
+      <p class="muestras-nota">Los quince patógenos del informe, vistos de cerca.</p>
+    </div>
+  </section>
+
+  <ul class="piezas">
+    <li><a href="tetraedro/index.html">
+      <img class="lupa" src="img/foto-botrytis-cinerea.jpg" alt="" width="72" height="72">
+      <div><h2>Armá el tetraedro</h2><p>Mové la temperatura, la humedad y las horas de hoja mojada, y mirá qué enfermedades encuentran lo que necesitan.</p><p class="dato">Página 4 del informe. Interactivo, 2 minutos</p></div>
+    </a></li>
+    <li><a href="calendario/index.html">
+      <img class="lupa" src="img/foto-extra-campo-lechuga.jpg" alt="" width="72" height="72">
+      <div><h2>Mismo tomate, dos calendarios</h2><p>Mes por mes, qué enfermedades aparecen en el Litoral Norte y en la Zona Sur.</p><p class="dato">Página 5 del informe. Interactivo, 1 minuto</p></div>
+    </a></li>
+    <li><a href="invernaculo/index.html">
+      <img class="lupa" src="img/foto-extra-invernadero.jpg" alt="" width="72" height="72">
+      <div><h2>Una noche en el invernáculo</h2><p>La humedad sube, el plástico gotea y aparece el moho gris. Después se abren las ventanas.</p><p class="dato">Página 6 del informe. Animación, 1 minuto</p></div>
+    </a></li>
+    <li><a href="trips/index.html">
+      <img class="lupa" src="img/foto-extra-trips.jpg" alt="" width="72" height="72">
+      <div><h2>El viaje del virus</h2><p>Cómo un trips lleva la peste negra de una planta enferma a una sana.</p><p class="dato">Página 6 del informe. Animación, 1 minuto</p></div>
+    </a></li>
+    <li><a href="quiz/index.html">
+      <img class="lupa" src="img/foto-tswv.jpg" alt="" width="72" height="72">
+      <div><h2>¿Quién ataca?</h2><p>Doce fotos de síntomas. Elegí qué patógeno es cada uno y mirá por qué.</p><p class="dato">Página 7 del informe. Juego, 3 minutos</p></div>
+    </a></li>
+    <li><a href="frenar/index.html">
+      <img class="lupa" src="img/foto-extra-solarizacion.jpg" alt="" width="72" height="72">
+      <div><h2>¿Cómo lo frenamos?</h2><p>De la prevención al químico, paso a paso, con tres casos de Uruguay.</p><p class="dato">Página 9 del informe. Interactivo, 2 minutos</p></div>
+    </a></li>
+    <li><a href="historia/index.html">
+      <img class="lupa" src="img/foto-phytophthora-infestans.jpg" alt="" width="72" height="72">
+      <div><h2>De Irlanda a CRISPR</h2><p>Las grandes epidemias de plantas y cómo aprendimos a frenarlas, de 1845 a hoy.</p><p class="dato">Página 10 del informe. Línea de tiempo, 2 minutos</p></div>
+    </a></li>
+    <li><a href="riesgo/index.html">
+      <img class="lupa" src="img/foto-extra-trampa-amarilla.jpg" alt="" width="72" height="72">
+      <div><h2>¿Tu cultivo está en riesgo?</h2><p>Diez preguntas de sí o no y un resultado con lo que conviene hacer.</p><p class="dato">Página 11 del informe. Chequeo, 2 minutos</p></div>
+    </a></li>
+    <li><a href="fuentes/index.html">
+      <span class="lupa icono" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8 12h8M8 16h6"/></svg></span>
+      <div><h2>Fuentes e informe completo</h2><p>Todas las referencias del informe, con buscador, y el informe entero en PDF.</p><p class="dato">Página 12 del informe</p></div>
+    </a></li>
+  </ul>
+</div>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h3>Fotos</h3><ul><li><b>Moho gris</b>. Foto de Rasbak at Dutch Wikipedia, <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Botrytis_tomaat.jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de la lechuga</b>. Foto de Gerald Holmes, Strawberry Center, Cal Poly San Luis Obispo, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/5608244">IPM Images</a>.</li><li><b>Cancro bacteriano</b>. Foto de Scot Nelson, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Bacterial_canker_of_tomato_caused_by_Corynebacterium_michiganense_pv._michiganense_(9777392932).jpg">Wikimedia Commons</a>.</li><li><b>Damping-off</b>. Foto de Dr. Jan Hinrichs-Berger, Landwirtschaftliches Technologiezentrum Augustenberg, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Rucola_-_Pythium_-_Hinrichs-Berger,_Augustenberg.jpg">Wikimedia Commons</a>.</li><li><b>Fusarium</b>. Foto de Victor M. Vicente Selvas, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomaquera_amb_Fusarium_HV.JPG">Wikimedia Commons</a>.</li><li><b>Oídio</b>. Foto de Dr. Parthasarathy Seethapathy, Amrita School of Agricultural Sciences, Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:5573619-PPT-powdery_mildew_(Leveillula_taurica).jpg">Wikimedia Commons</a>.</li><li><b>Nematodo de agallas</b>. Foto de Plant pests and diseases, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_(Solanum_lycopersicum)-_Galling_from_root-knot_nematodes.jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de la cebolla</b>. Foto de Jochen Kreiselmaier, DLR Rheinpfalz, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Falscher_Mehltau_2_(Peronospora_destructor)-DLR-NW-jk.jpg">Wikimedia Commons</a>.</li><li><b>Phytophthora del morrón</b>. Foto de Edward Sikora, Auburn University, Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0/us/deed.en">CC BY 3.0 US</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Capsicum_annuum_with_Phytophthora_capsici.jpg">Wikimedia Commons</a>.</li><li><b>Tizón tardío</b>. Foto de Scot Nelson from Honolulu, Hawaii, USA, <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en">CC0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_late_blight_leaf_sporulating_lesions_1_(5816170621).jpg">Wikimedia Commons</a>.</li><li><b>Mildiu de las cucurbitáceas</b>. Foto de Christian Hummert (Ixitixel), <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Falscher_Mehltau.jpg">Wikimedia Commons</a>.</li><li><b>Moho blanco</b>. Foto de Gerald Holmes, Strawberry Center, Cal Poly San Luis Obispo, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/5604267">IPM Images</a>.</li><li><b>Peste negra</b>. Foto de William M. Brown Jr., Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Tomato_spotted_wilt_virus_5356805-PPT.png">Wikimedia Commons</a>.</li><li><b>Mancha bacteriana</b>. Foto de Edward Sikora, Auburn University, <a href="https://creativecommons.org/licenses/by/3.0/us/">CC BY 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/1568045">IPM Images</a>.</li><li><b>Virosis de cucurbitáceas</b>. Foto de Downtowngal, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Zucchini_yellow_mosaic_virus_fruits_and_leaves_(cropped).jpg">Wikimedia Commons</a>.</li><li><b>Lechuga a campo</b>. Foto de Dwight Sipler from Stow, MA, USA, <a href="https://creativecommons.org/licenses/by/2.0">CC BY 2.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Lettuce_Field_(4988502682).jpg">Wikimedia Commons</a>.</li><li><b>Invernáculo</b>. Foto de Микола Василечко (Mykola Vasylechko), <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:%D0%A2%D0%B5%D0%BF%D0%BB%D0%B8%D1%86%D1%8F_-_20260802_162254.jpg">Wikimedia Commons</a>.</li><li><b>Solarización</b>. Foto de Gerald Holmes, Strawberry Center, Cal Poly San Luis Obispo, Bugwood.org, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/1571379">IPM Images</a>.</li><li><b>Trampa amarilla</b>. Foto de Rachel McCarthy, Bugwood.org, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/5458344">IPM Images</a>.</li><li><b>Trips</b>. Foto de Frank Peairs, Colorado State University, Bugwood.org, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Frankliniella_occidentalis_5364132-LGPT.jpg">Wikimedia Commons</a>.</li></ul><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>

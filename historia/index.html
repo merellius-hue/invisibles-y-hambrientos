@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>De Irlanda a CRISPR | Invisibles y hambrientos</title>
+<meta name="description" content="Línea de tiempo de las grandes epidemias de plantas y de cómo se aprendió a frenarlas, de 1845 a hoy.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="../img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.filtros { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 26px; }
+.linea { list-style: none; margin: 0; padding: 0; position: relative; --avance: 0; }
+.linea::before, .linea::after { content: ""; position: absolute; left: 83px; top: 6px; width: 3px; border-radius: 3px; }
+.linea::before { bottom: 6px; background: var(--linea); }
+.linea::after { height: calc(var(--avance) * (100% - 12px)); background: var(--carbon); }
+.hito { display: grid; grid-template-columns: 70px 30px 1fr; gap: 0 0; padding: 0 0 26px; position: relative; }
+.hito[hidden] { display: none; }
+.anio { font-family: var(--titulos); font-weight: 800; font-stretch: 72%; font-size: 1.6rem; line-height: 1; text-align: right; padding-right: 4px; color: var(--carbon); font-variant-numeric: tabular-nums; }
+.marca { position: relative; z-index: 1; display: grid; justify-items: center; padding-top: 2px; }
+.marca svg { width: 18px; height: 18px; }
+.marca .forma { fill: var(--papel); stroke-width: 2.4; transition: fill .25s; }
+.hito.visto .forma { fill: currentColor; }
+.ep { color: var(--terra); }
+.ci { color: var(--verde); }
+.uy { color: var(--carbon); }
+.texto h2 { font-size: 1.15rem; font-stretch: 88%; margin: 0 0 .25rem; }
+.texto p { font-size: 1.03rem; margin: 0; }
+.tipo { font-family: var(--titulos); font-size: .8rem; font-weight: 650; }
+.leyenda-hist { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--titulos); font-size: .9rem; margin: 0 0 8px; padding: 0; list-style: none; }
+.leyenda-hist li { display: flex; align-items: center; gap: 6px; }
+.leyenda-hist svg { width: 14px; height: 14px; }
+@media (min-width: 760px) {
+  .hito { grid-template-columns: 110px 34px 1fr; }
+  .linea::before, .linea::after { left: 125px; }
+  .anio { font-size: 2.1rem; }
+}
+</style>
+</head>
+<body>
+<header class="tope"><a class="volver" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a><span class="marca">Invisibles y hambrientos</span></header>
+<main id="contenido">
+
+
+<div class="envoltura">
+  <header class="cabeza">
+    <span class="pagina">Página 10 del informe</span>
+    <h1>De Irlanda a CRISPR</h1>
+    <p class="bajada">Casi dos siglos de epidemias de plantas y de aprender a ver cada vértice del tetraedro. Bajá despacio.</p>
+  </header>
+
+  <ul class="leyenda-hist" aria-hidden="true">
+    <li><svg viewBox="0 0 20 20" class="ep"><path d="M10 3L18 17H2Z" fill="currentColor"/></svg>Gran epidemia</li>
+    <li><svg viewBox="0 0 20 20" class="ci"><circle cx="10" cy="10" r="7" fill="currentColor"/></svg>Ciencia y control</li>
+    <li><svg viewBox="0 0 20 20" class="uy"><rect x="3" y="3" width="14" height="14" fill="currentColor"/></svg>Uruguay</li>
+  </ul>
+  <fieldset class="opciones filtros">
+    <legend class="oculto-visual">Mostrar</legend>
+    <label><input type="radio" name="f" value="todo" checked><span>Todo</span></label>
+    <label><input type="radio" name="f" value="ep"><span>Epidemias</span></label>
+    <label><input type="radio" name="f" value="ci"><span>Ciencia y control</span></label>
+    <label><input type="radio" name="f" value="uy"><span>Uruguay</span></label>
+  </fieldset>
+
+  <ol class="linea" id="linea"></ol>
+  <p class="margen">Elegí los hechos que tienen una fuente abierta y leída. Para Bengala, las fuentes presentan la epidemia como una causa entre varias.</p>
+</div>
+
+<script>
+(function () {
+  var H = [
+    ["1845", "ep", "Tizón tardío y hambruna en Irlanda", "El verano empezó soleado y siguieron semanas nubladas y lluviosas. Las papas se pudrieron. En 15 años Irlanda perdió al menos un millón de personas por hambre y enfermedades, y otro millón y medio emigró.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>"],
+    ["1861", "ci", "De Bary encuentra al culpable", "Inoculó unas plantas con el organismo y dejó otras sin tocar, y solo las inoculadas enfermaron.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup> Su libro de 1861 funda la fitopatología.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup> Era Phytophthora infestans, el mismo del tizón tardío del tomate en el sur de Uruguay.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup>"],
+    ["1882", "ci", "Nace el caldo bordelés", "En Burdeos, algunas vides se rociaban con sulfato de cobre y cal para que nadie robara la uva. Millardet vio que esas vides conservaban las hojas y concluyó que la mezcla frenaba al mildiu.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>"],
+    ["1886", "ci", "Un mosaico que se contagia", "Mayer mostró que el mosaico del tabaco pasa a plantas sanas frotándolas con savia de plantas enfermas.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>"],
+    ["1892", "ci", "Más chico que una bacteria", "Ivanowski pasó la savia enferma por un filtro de porcelana que retiene bacterias, y seguía contagiando.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>"],
+    ["1898", "ci", "Nace la virología", "Beijerinck propuso que el agente del mosaico no era un microbio sino un contagio vivo y líquido.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup> Fue el primer virus descrito.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a></sup>"],
+    ["1905", "ci", "La resistencia se hereda", "Biffen mostró que la resistencia del trigo a una roya pasa de padres a hijos como un carácter de Mendel.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>"],
+    ["1935", "ci", "Un virus en cristales", "Stanley cristalizó el virus del mosaico del tabaco.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup> En 1946 compartió el Nobel de Química.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup>"],
+    ["1943", "ep", "Hambruna de Bengala", "Hubo cerca de 2 millones de muertes. Para Padmanabhan, la causa inmediata fueron fallas de la administración, pero la mala cosecha de 1942 se debió sobre todo a la mancha marrón del arroz.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a></sup> Otros autores advierten que la relación entre epidemia y hambruna casi nunca es simple.<sup class='r'><a href='#f10' aria-label='Fuente 10'>10</a></sup>"],
+    ["1959", "ci", "El umbral", "Stern y sus colegas definieron el umbral económico, el nivel de plaga desde el que conviene actuar. Es la base del manejo integrado.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup>"],
+    ["1969", "ci", "La primera resistencia", "El benomilo, un fungicida que entra en la planta, salió en 1968. Un año después ya había un oídio de invernáculo que lo resistía.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>"],
+    ["1970", "ep", "Tizón del maíz en Estados Unidos", "Se perdió cerca del 15 % de la cosecha. Más del 85 % de los híbridos tenía el mismo citoplasma, llamado Texas.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a></sup>"],
+    ["1971", "ci", "Los viroides", "Diener descubrió que el tubérculo ahusado de la papa lo causa un viroide, un ARN desnudo sin proteínas, y no un virus.<sup class='r'><a href='#f13' aria-label='Fuente 13'>13</a></sup>"],
+    ["1989", "uy", "Uruguay crea el INIA", "La Ley 16.065 crea el Instituto Nacional de Investigación Agropecuaria.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup>"],
+    ["2012", "uy", "Avisos de mildiu por correo", "La DIGEGRA empezó a avisar por correo cuándo había riesgo de mildiu en la cebolla.<sup class='r'><a href='#f15' aria-label='Fuente 15'>15</a></sup>"],
+    ["2013", "ci", "Un mapa que se mueve", "Desde 1960, cientos de plagas y patógenos de cultivos se corrieron hacia los polos, en promedio 2,7 km por año.<sup class='r'><a href='#f16' aria-label='Fuente 16'>16</a></sup> En nuestro hemisferio el polo está al sur."],
+    ["2014", "uy", "La peste negra en el norte", "INIA Salto Grande señala a la peste negra como la principal limitante del morrón protegido del norte.<sup class='r'><a href='#f17' aria-label='Fuente 17'>17</a></sup>"],
+    ["2014", "ep", "El virus rugoso del tomate", "Apareció en Israel, en tomates que tenían el gen de resistencia Tm-2².<sup class='r'><a href='#f18' aria-label='Fuente 18'>18</a></sup> Para Uruguay es una plaga cuarentenaria ausente. No está en el país y se controla que no entre.<sup class='r'><a href='#f19' aria-label='Fuente 19'>19</a></sup>"],
+    ["2016", "ci", "Una inteligencia artificial que se equivoca", "Una red neuronal entrenada con 54.306 fotos reconoció enfermedades con 99,35 % de exactitud. Con fotos tomadas en otras condiciones bajó a cerca de 31 %.<sup class='r'><a href='#f20' aria-label='Fuente 20'>20</a></sup>"],
+    ["2017", "ci", "Tomate editado contra el oídio", "Con CRISPR y Cas9 se borraron 48 pares de bases de un gen del tomate. La planta quedó resistente al oídio en menos de 10 meses y sin ADN de otra especie.<sup class='r'><a href='#f21' aria-label='Fuente 21'>21</a></sup>"],
+    ["2021", "ci", "Una alarma para el tizón", "El sistema PhytoAlert del INTA permitió usar hasta 50 % menos fungicida contra el tizón tardío de la papa en Argentina.<sup class='r'><a href='#f22' aria-label='Fuente 22'>22</a></sup>"],
+    ["2024", "uy", "Reglas para plantas editadas", "Con el Decreto 84 de 2024, un grupo técnico de ocho instituciones analiza en 90 días si una planta editada se trata como transgénica.<sup class='r'><a href='#f23' aria-label='Fuente 23'>23</a></sup>"]
+  ];
+  var NOMBRE = { ep: "Gran epidemia", ci: "Ciencia y control", uy: "Uruguay" };
+  var FORMA = { ep: '<path class="forma" d="M10 2.5L18 17.5H2Z" stroke="currentColor"/>', ci: '<circle class="forma" cx="10" cy="10" r="7" stroke="currentColor"/>', uy: '<rect class="forma" x="3" y="3" width="14" height="14" stroke="currentColor"/>' };
+  var lista = document.getElementById("linea");
+  lista.innerHTML = H.map(function (h) {
+    return '<li class="hito" data-c="' + h[1] + '"><span class="anio">' + h[0] + '</span><span class="marca ' + h[1] + '"><svg viewBox="0 0 20 20" aria-hidden="true">' + FORMA[h[1]] + '</svg></span><div class="texto"><span class="tipo ' + h[1] + '">' + NOMBRE[h[1]] + "</span><h2>" + h[2] + "</h2><p>" + h[3] + "</p></div></li>";
+  }).join("");
+
+  var hitos = [].slice.call(lista.children);
+  function avance() {
+    var r = lista.getBoundingClientRect();
+    var meta = window.innerHeight * 0.7;
+    var a = Math.max(0, Math.min(1, (meta - r.top) / r.height));
+    lista.style.setProperty("--avance", a);
+    hitos.forEach(function (h) { if (!h.hidden) h.classList.toggle("visto", h.getBoundingClientRect().top < meta); });
+  }
+  var pedido = false;
+  window.addEventListener("scroll", function () { if (!pedido) { pedido = true; requestAnimationFrame(function () { pedido = false; avance(); }); } }, { passive: true });
+  window.addEventListener("resize", avance);
+  document.querySelectorAll("input[name=f]").forEach(function (r) {
+    r.addEventListener("change", function () {
+      hitos.forEach(function (h) { h.hidden = !(r.value === "todo" || h.dataset.c === r.value); });
+      avance();
+    });
+  });
+  avance();
+})();
+</script>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h2 id="fuentes">Fuentes</h2><ol><li id="f1">Schumann, G. L. (s.f.). <em>The Irish potato famine and the birth of plant pathology</em>. APSnet Features. <a href="https://www.apsnet.org/edcenter/apsnetfeatures/Pages/PotatoLateBlightPlantDiseasesBirth.aspx">https://www.apsnet.org/edcenter/apsnetfeatures/Pages/PotatoLateBlightPlantDiseasesBirth.aspx</a></li><li id="f2">Kutschera, U. y Hoßfeld, U. (2012). Physiological phytopathology: Origin and evolution of a scientific discipline. <em>Journal of Applied Botany and Food Quality, 85</em>, 1–5. <a href="https://doi.org/10.5073/JABFQ.2012.085.001">https://doi.org/10.5073/JABFQ.2012.085.001</a></li><li id="f3">Dirección General de la Granja, Facultad de Agronomía e Instituto Nacional de Investigación Agropecuaria. (2018). <em>Normas para la producción integrada de tomate bajo invernáculo: Zona Sur. Actualización 2018</em>. <a href="https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf">https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf</a></li><li id="f4">Morton, V. y Staub, T. (2008). A short history of fungicides. <em>APSnet Features</em>. <a href="https://doi.org/10.1094/APSnetFeature-2008-0308">https://doi.org/10.1094/APSnetFeature-2008-0308</a></li><li id="f5">Scholthof, K.-B. G. (2008). Tobacco mosaic virus: The beginning of plant virology. <em>APSnet Features</em>. <a href="https://doi.org/10.1094/APSnetFeature-2008-0408">https://doi.org/10.1094/APSnetFeature-2008-0408</a></li><li id="f6">Gergerich, R. C. y Dolja, V. V. (2008). Introducción a los virus vegetales, el enemigo invisible (S. L. Giammaría, Trad.). <em>The Plant Health Instructor</em>. <a href="https://doi.org/10.1094/PHI-I-2008-0122-01">https://doi.org/10.1094/PHI-I-2008-0122-01</a></li><li id="f7">Kaur, B., Bhatia, D. y Mavi, G. S. (2021). Eighty years of gene-for-gene relationship and its applications in identification and utilization of R genes. <em>Journal of Genetics, 100</em>(2), Artículo 50. <a href="https://doi.org/10.1007/s12041-021-01300-7">https://doi.org/10.1007/s12041-021-01300-7</a></li><li id="f8">Nobel Prize Outreach. (s.f.). <em>The Nobel Prize in Chemistry 1946: Summary</em>. NobelPrize.org. <a href="https://www.nobelprize.org/prizes/chemistry/1946/summary/">https://www.nobelprize.org/prizes/chemistry/1946/summary/</a></li><li id="f9">Padmanabhan, S. Y. (1973). <em>The great Bengal famine. Annual Review of Phytopathology, 11, 11-24</em>. Annual Reviews. <a href="https://www.annualreviews.org/content/journals/10.1146/annurev.py.11.090173.000303">https://www.annualreviews.org/content/journals/10.1146/annurev.py.11.090173.000303</a></li><li id="f10">Barnwal, M. K., Kotasthane, A., Magculia, N., Mukherjee, P. K., Savary, S. et al. (2013). <em>A review on crop losses, epidemiology and disease management of rice brown spot to identify research priorities and knowledge gaps. European Journal of Plant Pathology, 136</em>. Springer (acceso abierto). <a href="https://link.springer.com/article/10.1007/s10658-013-0195-6">https://link.springer.com/article/10.1007/s10658-013-0195-6</a></li><li id="f11">Stern, V. M., Smith, R. F., van den Bosch, R. y Hagen, K. S. (1959). The integration of chemical and biological control of the spotted alfalfa aphid: The integrated control concept. <em>Hilgardia, 29</em>(2), 81–101. <a href="https://doi.org/10.3733/hilg.v29n02p081">https://doi.org/10.3733/hilg.v29n02p081</a></li><li id="f12">Bruns, H. A. (2017). Southern corn leaf blight: A story worth retelling. <em>Agronomy Journal, 109</em>(4), 1218–1224. <a href="https://doi.org/10.2134/agronj2017.01.0006">https://doi.org/10.2134/agronj2017.01.0006</a></li><li id="f13">Diener, T. O. (2003). Discovering viroids — a personal perspective. <em>Nature Reviews Microbiology, 1</em>(1), 75–80. <a href="https://doi.org/10.1038/nrmicro736">https://doi.org/10.1038/nrmicro736</a></li><li id="f14">Uruguay. (1989). <em>Ley N.º 16.065: Creación del Instituto Nacional de Investigación Agropecuaria</em>. IMPO. <a href="https://www.impo.com.uy/bases/leyes/16065-1989">https://www.impo.com.uy/bases/leyes/16065-1989</a></li><li id="f15">Arboleya, J., Maeso, D., Campelo, E., Paullier, J. y Giménez, G. (Eds.). (2013). <em>Producción integrada de cebolla</em> (Boletín de Divulgación N.º 105). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-06/bd-105-2013.pdf">https://www.inia.uy/sites/default/files/publications/2024-06/bd-105-2013.pdf</a></li><li id="f16">Bebber, D. P., Ramotowski, M. A. T. y Gurr, S. J. (2013). Crop pests and pathogens move polewards in a warming world. <em>Nature Climate Change, 3</em>(11), 985–988. <a href="https://doi.org/10.1038/nclimate1990">https://doi.org/10.1038/nclimate1990</a></li><li id="f17">Rubio, L., Amaral, J., González, M., Arruabarrena, A. y Maeso, D. (2014b). Situación actual del virus de la "peste negra" en los cultivos de pimiento del norte del país. En <em>Avances de investigación: Protección vegetal en tomate y morrón</em> (Serie Actividades de Difusión N.º 740, pp. 2–13). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf">https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf</a></li><li id="f18">Luria, N., Smith, E., Reingold, V., Bekelman, I., Lapidot, M., Levin, I., Elad, N., Tam, Y., Sela, N., Abu-Ras, A., Ezra, N., Haberman, A., Yitzhak, L., Lachman, O. y Dombrovsky, A. (2017). A new Israeli Tobamovirus isolate infects tomato plants harboring Tm-2² resistance genes. <em>PLoS ONE, 12</em>(1), Artículo e0170429. <a href="https://doi.org/10.1371/journal.pone.0170429">https://doi.org/10.1371/journal.pone.0170429</a></li><li id="f19">Ministerio de Ganadería, Agricultura y Pesca, Dirección General de Servicios Agrícolas. (2025). <em>Resolución N.º 186/025. Anexo I: Lista de plagas reglamentadas de Uruguay</em>. <a href="https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/sites/ministerio-ganaderia-agricultura-pesca/files/2025-02/ANEXO%201%20Lista%20de%20Plagas%20Reglamentadas%20de%20Uruguay.pdf">https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/sites/ministerio-ganaderia-agricultura-pesca/files/2025-02/ANEXO%201%20Lista%20de%20Plagas%20Reglamentadas%20de%20Uruguay.pdf</a></li><li id="f20">Mohanty, S. P., Hughes, D. P. y Salathé, M. (2016). Using deep learning for image-based plant disease detection. <em>Frontiers in Plant Science, 7</em>, Artículo 1419. <a href="https://doi.org/10.3389/fpls.2016.01419">https://doi.org/10.3389/fpls.2016.01419</a></li><li id="f21">Nekrasov, V., Wang, C., Win, J., Lanz, C., Weigel, D. y Kamoun, S. (2017). Rapid generation of a transgene-free powdery mildew resistant tomato by genome deletion. <em>Scientific Reports, 7</em>, Artículo 482. <a href="https://doi.org/10.1038/s41598-017-00578-x">https://doi.org/10.1038/s41598-017-00578-x</a></li><li id="f22">Instituto Nacional de Tecnología Agropecuaria. (2021, 19 de octubre). <em>Desarrollan una herramienta para el control del tizón tardío</em>. INTA Informa. <a href="https://intainforma.inta.gob.ar/desarrollan-una-herramienta-para-el-control-del-tizon-tardio/">https://intainforma.inta.gob.ar/desarrollan-una-herramienta-para-el-control-del-tizon-tardio/</a></li><li id="f23">Poder Ejecutivo. (2024). <em>Decreto N.º 84/024: Fijación del mecanismo para determinar si los productos obtenidos a través de nuevas técnicas de mejoramiento genético se encuentran o no alcanzados por la regulación aplicable a los organismos genéticamente modificados</em>. IMPO. <a href="https://www.impo.com.uy/bases/decretos/84-2024">https://www.impo.com.uy/bases/decretos/84-2024</a></li></ol><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('../sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>

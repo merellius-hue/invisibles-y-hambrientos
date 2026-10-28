@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mismo tomate, dos calendarios | Invisibles y hambrientos</title>
+<meta name="description" content="Calendario interactivo de las enfermedades de las hortalizas en el Litoral Norte y la Zona Sur de Uruguay, mes por mes.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="../img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.meses { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin: 1.2rem 0 1.4rem; }
+.meses button {
+  min-height: 44px; border: 2px solid var(--linea); background: var(--papel); border-radius: 10px;
+  font-family: var(--titulos); font-weight: 650; font-size: .98rem; color: var(--carbon); cursor: pointer;
+}
+.meses button[aria-pressed=true] { background: var(--carbon); border-color: var(--carbon); color: #fff; }
+.mes-panel { background: var(--papel); border: 1px solid var(--linea); border-radius: 18px; padding: 18px; margin-bottom: 2rem; }
+.mes-panel h2 { margin-bottom: .3rem; }
+.mes-panel .temp { font-size: 1rem; color: var(--apagado); }
+.mes-panel .zonas { display: grid; gap: 14px; }
+.mes-panel h3 { font-size: 1.02rem; margin: .4rem 0 .3rem; }
+.mes-panel ul { margin: 0; padding: 0; list-style: none; }
+.mes-panel li { display: flex; gap: 10px; align-items: center; font-size: 1rem; padding: .25rem 0; }
+.mes-panel .nada { color: var(--apagado); font-size: 1rem; }
+.chip { width: 26px; height: 14px; border-radius: 3px; flex: none; }
+.zona { margin-bottom: 2rem; }
+.zona h2 { font-size: 1.35rem; border-bottom: 2px solid var(--carbon); padding-bottom: .3rem; margin-bottom: 0; }
+.zona h2 small { font-family: var(--texto); font-weight: 400; font-size: .95rem; color: var(--apagado); font-stretch: normal; }
+.eje { display: grid; grid-template-columns: repeat(12, 1fr); font-family: var(--titulos); font-size: .78rem; color: var(--apagado); text-align: center; padding: .5rem 0 .2rem; }
+.eje span.sel { color: var(--carbon); font-weight: 800; }
+.fila { border-bottom: 1px solid var(--linea); }
+.fila > button {
+  width: 100%; background: none; border: 0; padding: 10px 0 12px; text-align: left; cursor: pointer; color: var(--carbon);
+  font: inherit; display: block;
+}
+.fila .nombre { display: flex; justify-content: space-between; gap: 8px; font-family: var(--titulos); font-weight: 650; font-size: 1rem; margin-bottom: 6px; }
+.fila .nombre svg { width: 18px; height: 18px; flex: none; transition: transform .2s; color: var(--apagado); }
+.fila > button[aria-expanded=true] .nombre svg { transform: rotate(180deg); }
+.barra { display: grid; grid-template-columns: repeat(12, 1fr); height: 22px; }
+.barra span { border-left: 1px solid #E3E8E1; position: relative; }
+.barra span.sel { background: rgba(51,63,72,.09); }
+.barra i { position: absolute; top: 3px; bottom: 3px; left: 0; right: 0; }
+.barra i.izq { right: 50%; }
+.barra i.der { left: 50%; }
+.barra .nota { grid-column: 1 / -1; font-style: italic; font-size: .92rem; color: var(--apagado); align-self: center; }
+.t-oferta { background: var(--verde); }
+.t-riesgo { background: repeating-linear-gradient(135deg, var(--terra-claro) 0 4px, #E4A88E 4px 6px); outline: 1px solid var(--terra); outline-offset: -1px; }
+.t-pico { background: var(--terra); }
+.t-agro { background: radial-gradient(var(--carbon) 1px, transparent 1.4px) 0 0 / 5px 5px, var(--papel); outline: 1px solid var(--carbon); outline-offset: -1px; }
+.t-abrigo { background: var(--carbon); }
+.t-practica { background: repeating-linear-gradient(0deg, var(--papel) 0 3px, #7D878E 3px 4px); outline: 1px solid var(--carbon); outline-offset: -1px; }
+.flecha-abierta::after { content: ""; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); border: 7px solid transparent; border-left-color: var(--terra); }
+.detalle { font-size: 1rem; padding: 0 0 14px; margin: 0; }
+.leyenda { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; margin: 0 0 1.4rem; padding: 0; list-style: none; font-size: .95rem; }
+.leyenda li { display: flex; gap: 8px; align-items: center; }
+@media (min-width: 760px) {
+  .meses { grid-template-columns: repeat(12, 1fr); }
+  .mes-panel .zonas { grid-template-columns: 1fr 1fr; }
+  .leyenda { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+<header class="tope"><a class="volver" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a><span class="marca">Invisibles y hambrientos</span></header>
+<main id="contenido">
+
+
+<div class="envoltura ancha">
+  <header class="cabeza">
+    <span class="pagina">Página 5 del informe</span>
+    <h1>Mismo tomate, dos calendarios</h1>
+    <p class="bajada">Uruguay tiene dos zonas hortícolas. El Litoral Norte cosecha bajo plástico en invierno y primavera, y la Zona Sur en verano y otoño.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup></p>
+    <p>Tocá un mes para ver qué pasa ese mes en cada zona. Tocá una fila para leer de dónde sale.</p>
+  </header>
+
+  <div class="meses" role="group" aria-label="Elegí un mes" id="meses"></div>
+  <section class="mes-panel" id="mes-panel" aria-live="polite"></section>
+
+  <ul class="leyenda" aria-label="Qué significa cada color">
+    <li><span class="chip t-oferta"></span>Sale al mercado</li>
+    <li><span class="chip t-riesgo"></span>Las fuentes ubican la enfermedad</li>
+    <li><span class="chip t-pico"></span>Ataque más fuerte o pico de trips</li>
+    <li><span class="chip t-agro"></span>Helada sobre el césped</li>
+    <li><span class="chip t-abrigo"></span>Helada en el abrigo, bajo 0 °C</li>
+    <li><span class="chip t-practica"></span>Solarización del suelo</li>
+  </ul>
+
+  <section class="zona" aria-labelledby="z-norte">
+    <h2 id="z-norte">Litoral Norte <small>Salto y Bella Unión</small></h2>
+    <div class="eje" aria-hidden="true" data-eje></div>
+    <div id="filas-norte"></div>
+  </section>
+  <section class="zona" aria-labelledby="z-sur">
+    <h2 id="z-sur">Zona Sur <small>Canelones, Montevideo y San José</small></h2>
+    <div class="eje" aria-hidden="true" data-eje></div>
+    <div id="filas-sur"></div>
+  </section>
+
+  <p class="margen">Es una síntesis mía. Solo marqué meses que una fuente da con meses o estaciones. Cuando la fuente da una estación tomé verano de diciembre a febrero, otoño de marzo a mayo, invierno de junio a agosto y primavera de setiembre a noviembre.</p>
+</div>
+
+<script>
+(function () {
+  var MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
+  var CORTO = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"];
+  var TEMP = { salto: [25.6, 24.5, 22.7, 19.2, 15.7, 13.2, 12.6, 14.5, 16.1, 19.0, 21.7, 24.0],
+               melilla: [23.2, 22.7, 21.1, 17.8, 14.5, 11.5, 10.6, 12.4, 13.7, 16.4, 19.0, 21.6] };
+  var FUENTE_TEMP = "<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>";
+  var NOMBRE_TIPO = { oferta: "sale al mercado", riesgo: "las fuentes lo ubican", pico: "ataque más fuerte", agro: "puede helar sobre el césped", abrigo: "helada en el abrigo", practica: "se solariza" };
+
+  // [inicio, fin, tipo]; enero = 0, "mediados de mayo" = 4.5
+  var NORTE = [
+    { n: "Tomate y morrón de invernáculo", s: [[5, 11, "oferta"]], d: "El norte produce a contraestación, fuera de la época normal del cultivo. En la zafra de 2014 a 2015 sacaba de cultivos protegidos el 57 % del tomate y el 73 % del morrón del país.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup> Los cosecha en invierno y primavera.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup>" },
+    { n: "Cebolla temprana", s: [[9, 11, "oferta"]], d: "La cebolla temprana del norte sale al mercado en octubre y noviembre.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>" },
+    { n: "Moho gris en tomate", s: [[4.5, 10, "riesgo"]], d: "Desde mediados de mayo los invernáculos se abren menos, la humedad sube y aparece el moho gris. Puede atacar fuerte hasta fines de octubre.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>" },
+    { n: "Oídio en morrón", s: [[4, 11, "riesgo"]], d: "En Salto y Bella Unión ataca de mayo a noviembre, más fuerte en las zonas húmedas del invernáculo.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a></sup>" },
+    { n: "Mildiu en cebolla", s: [[7.5, 11, "riesgo"]], d: "Va desde mediados de agosto hasta el fin del ciclo.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup> Que termine en noviembre es una inferencia mía. Golpea más en el norte porque la cebolla se siembra temprano.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup>" },
+    { n: "Mancha bacteriana a campo", s: [[8, 12, "riesgo"], [0, 2, "riesgo"]], d: "Aparece en primavera y verano. Es el principal problema del tomate en años lluviosos y cálidos.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a>,<a href='#f9' aria-label='Fuente 9'>9</a></sup>" },
+    { n: "Nematodo de agallas", s: [[9, 10, "riesgo"], [10, 12, "pico"]], d: "Es más grave en el norte, sobre todo en noviembre y diciembre.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>" },
+    { n: "Peste negra en morrón", s: [], nota: "Sin meses en las fuentes", d: "Es la principal limitante del morrón del norte, pero ninguna fuente da meses.<sup class='r'><a href='#f10' aria-label='Fuente 10'>10</a></sup> En Salto los trips se multiplicaron bien incluso con medias cercanas a 15 °C en junio.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup>" },
+    { n: "Heladas en Salto", s: [[4, 9, "agro"], [5, 8, "abrigo"]], d: "La helada sobre el césped se mide a ras del suelo. La helada en el abrigo es cuando la mínima del abrigo meteorológico baja de 0 °C.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a>,<a href='#f13' aria-label='Fuente 13'>13</a></sup> La mínima absoluta de Salto fue de 5,6 grados bajo cero.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>" },
+    { n: "Solarización del suelo", s: [[11.5, 12, "practica"], [0, 1, "practica"]], d: "Cerca del 90 % de los productores con cultivos protegidos del norte tapa el suelo con plástico entre mediados de diciembre y fines de enero, para que el sol lo desinfecte.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup>" }
+  ];
+  var SUR = [
+    { n: "Tomate a campo e invernáculo", s: [[11, 12, "oferta"], [0, 5, "oferta"]], d: "El sur es la única zona con tomate a campo, que sale en verano y otoño.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a>,<a href='#f3' aria-label='Fuente 3'>3</a></sup>" },
+    { n: "Tizón tardío en tomate", s: [[2, 8, "riesgo"]], d: "Las normas de producción integrada piden atención especial al tizón tardío en otoño e invierno.<sup class='r'><a href='#f15' aria-label='Fuente 15'>15</a></sup>" },
+    { n: "Moho gris en tomate", s: [[2, 4, "riesgo"]], abierta: true, d: "Aparece desde marzo o abril. La fuente no dice cuándo termina.<sup class='r'><a href='#f16' aria-label='Fuente 16'>16</a></sup>" },
+    { n: "Trips en morrón de invernáculo", s: [[11, 12, "pico"], [0, 2, "pico"]], d: "Llegan al máximo entre diciembre y febrero, con medias de 25 °C o más adentro del invernáculo.<sup class='r'><a href='#f17' aria-label='Fuente 17'>17</a></sup>" },
+    { n: "Heladas en Melilla", s: [[4, 9, "agro"], [5, 7, "abrigo"]], d: "Mismas definiciones que en Salto. La mínima absoluta de Melilla fue de 2,5 grados bajo cero.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a>,<a href='#f13' aria-label='Fuente 13'>13</a>,<a href='#f2' aria-label='Fuente 2'>2</a></sup>" }
+  ];
+  var PRIORIDAD = { abrigo: 3, pico: 2, practica: 1, oferta: 1, riesgo: 1, agro: 0 };
+
+  function celdas(segs, m) {
+    var out = [];
+    segs.forEach(function (sg) {
+      var a = Math.max(sg[0], m), b = Math.min(sg[1], m + 1);
+      if (b - a <= 0) return;
+      var parte = (b - a >= 1) ? "" : (a > m ? "der" : "izq");
+      out.push({ t: sg[2], p: parte });
+    });
+    out.sort(function (x, y) { return PRIORIDAD[x.t] - PRIORIDAD[y.t]; });
+    return out;
+  }
+  function activos(fila, m) {
+    var c = celdas(fila.s, m);
+    return c.length ? c[c.length - 1].t : null;
+  }
+
+  var flecha = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  var mes = new Date().getMonth();
+
+  function dibujarFilas(cont, filas, pref) {
+    cont.innerHTML = filas.map(function (f, i) {
+      var barra = "";
+      if (!f.s.length) barra = '<span class="nota">' + f.nota + '</span>';
+      else for (var m = 0; m < 12; m++) {
+        var c = celdas(f.s, m);
+        var ultima = f.abierta && m === Math.ceil(f.s[f.s.length - 1][1]) - 1;
+        barra += '<span data-m="' + m + '">' + c.map(function (x) { return '<i class="t-' + x.t + (x.p ? " " + x.p : "") + (ultima ? " flecha-abierta" : "") + '"></i>'; }).join("") + "</span>";
+      }
+      var id = pref + i;
+      return '<div class="fila"><button type="button" aria-expanded="false" aria-controls="' + id + '"><span class="nombre">' + f.n + flecha + '</span><span class="barra" aria-hidden="true">' + barra + '</span></button>' +
+        '<p class="detalle" id="' + id + '" hidden>' + f.d + "</p></div>";
+    }).join("");
+  }
+
+  function lista(filas, m) {
+    var items = filas.map(function (f) { var t = activos(f, m); return t ? '<li><span class="chip t-' + t + '"></span>' + f.n + ", " + NOMBRE_TIPO[t] + "</li>" : ""; }).join("");
+    return items ? "<ul>" + items + "</ul>" : '<p class="nada">Nada marcado este mes.</p>';
+  }
+
+  function elegir(m) {
+    mes = m;
+    document.querySelectorAll("#meses button").forEach(function (b, i) { b.setAttribute("aria-pressed", i === m ? "true" : "false"); });
+    document.querySelectorAll(".barra span[data-m]").forEach(function (s) { s.classList.toggle("sel", +s.dataset.m === m); });
+    document.querySelectorAll("[data-eje] span").forEach(function (s, i) { s.classList.toggle("sel", i % 12 === m); });
+    var f = function (x) { return x.toFixed(1).replace(".", ","); };
+    document.getElementById("mes-panel").innerHTML =
+      "<h2>En " + MESES[m] + "</h2><p class=\"temp\">Temperatura media, Salto " + f(TEMP.salto[m]) + " °C y Melilla " + f(TEMP.melilla[m]) + " °C." + FUENTE_TEMP + "</p>" +
+      '<div class="zonas"><div><h3>Litoral Norte</h3>' + lista(NORTE, m) + '</div><div><h3>Zona Sur</h3>' + lista(SUR, m) + "</div></div>";
+  }
+
+  document.getElementById("meses").innerHTML = CORTO.map(function (c, i) { return '<button type="button" aria-pressed="false" aria-label="' + MESES[i] + '">' + c + "</button>"; }).join("");
+  document.querySelectorAll("[data-eje]").forEach(function (e) { e.innerHTML = CORTO.map(function (c) { return "<span>" + c.charAt(0) + "</span>"; }).join(""); });
+  dibujarFilas(document.getElementById("filas-norte"), NORTE, "dn");
+  dibujarFilas(document.getElementById("filas-sur"), SUR, "ds");
+  document.querySelectorAll("#meses button").forEach(function (b, i) { b.addEventListener("click", function () { elegir(i); }); });
+  document.querySelectorAll(".fila > button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var abierto = b.getAttribute("aria-expanded") === "true";
+      b.setAttribute("aria-expanded", abierto ? "false" : "true");
+      document.getElementById(b.getAttribute("aria-controls")).hidden = abierto;
+    });
+  });
+  elegir(mes);
+})();
+</script>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h2 id="fuentes">Fuentes</h2><ol><li id="f1">Ministerio de Ganadería, Agricultura y Pesca, Estadísticas Agropecuarias y Dirección General de la Granja. (2017). <em>Encuestas hortícolas 2015-2016: Zonas Sur y Litoral Norte</em> (Serie Encuestas N.º 344). <a href="https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/sites/ministerio-ganaderia-agricultura-pesca/files/2020-02/texto_publicacion_horticolas_2015.pdf">https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/sites/ministerio-ganaderia-agricultura-pesca/files/2020-02/texto_publicacion_horticolas_2015.pdf</a></li><li id="f2">Instituto Uruguayo de Meteorología. (s.f.-c). <em>Tablas estadísticas</em>. Recuperado el 26 de octubre de 2026 de <a href="https://www.inumet.gub.uy/clima/estadisticas-climatologicas/tablas-estadisticas">https://www.inumet.gub.uy/clima/estadisticas-climatologicas/tablas-estadisticas</a></li><li id="f3">INIA. (2021). <em>Formulario de postulación a certificación de tecnologías 15-2021-HO</em>. <a href="https://www.inia.uy/sites/default/files/tecnologias/2026-01/15-2021-HO.pdf">https://www.inia.uy/sites/default/files/tecnologias/2026-01/15-2021-HO.pdf</a></li><li id="f4">Campelo, E. y Arboleya, J. (2005). Actualidad de la producción de cebolla en Uruguay. En J. Arboleya (Ed.), <em>Tecnología para la producción de cebolla</em> (Boletín de Divulgación N.º 88, pp. 1–15). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/Bd-88-Campelo-p-15.pdf">https://inia.uy/sites/default/files/publications/2024-10/Bd-88-Campelo-p-15.pdf</a></li><li id="f5">Bernal, R. (2010). <em>Enfermedades de tomate (Lycopersicum esculentum Mill.) en invernadero en las zonas de Salto y Bella Unión</em> (Serie Técnica N.º 181). INIA. <a href="https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf">https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf</a></li><li id="f6">Bernal, R. (2006). <em>Oidio del pimiento en la zona norte de Uruguay</em> (Hoja de Divulgación N.º 94). INIA. <a href="https://inia.uy/sites/default/files/publications/2025-11/hd-94-2006.pdf">https://inia.uy/sites/default/files/publications/2025-11/hd-94-2006.pdf</a></li><li id="f7">Bernal, R. (2005). Enfermedades de la cebolla y su control. En J. Arboleya (Ed.), <em>Tecnología para la producción de cebolla</em> (Boletín de Divulgación N.º 88, pp. 180–188). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/Bd-88-Bernal-p80-188.pdf">https://inia.uy/sites/default/files/publications/2024-10/Bd-88-Bernal-p80-188.pdf</a></li><li id="f8">Vicente, E., Carrega, G., Manzzioni, A., Vilaró, F. y Rodríguez, G. (2007). <em>El cultivar de cebolla INIA Casera</em> (Boletín de Divulgación N.º 92). INIA. <a href="https://inia.uy/sites/default/files/publications/2025-11/bd-92-2007.pdf">https://inia.uy/sites/default/files/publications/2025-11/bd-92-2007.pdf</a></li><li id="f9">Berrueta, C., Giménez, G., Galván, G. y Borges, A. (2014). Componentes de resistencia a Xanthomonas vesicatoria raza T2 en genotipos de tomate en condiciones de invernadero y cámara de crecimiento. <em>Agrociencia Uruguay, 18</em>(1), 86–96. <a href="https://doi.org/10.31285/AGRO.18.442">https://doi.org/10.31285/AGRO.18.442</a></li><li id="f10">Rubio, L., Amaral, J., González, M., Arruabarrena, A. y Maeso, D. (2014a). <em>Avances de investigación. Protección vegetal en tomate y morrón</em>. INIA Salto Grande. <a href="https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf">https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf</a></li><li id="f11">Rubio, L., Amaral, J., González, M., Arruabarrena, A. y Maeso, D. (2014b). Situación actual del virus de la "peste negra" en los cultivos de pimiento del norte del país. En <em>Avances de investigación: Protección vegetal en tomate y morrón</em> (Serie Actividades de Difusión N.º 740, pp. 2–13). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf">https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf</a></li><li id="f12">Castaño, J. P., Giménez, A., Ceroni, M., Furest, J., Aunchayna, R. y Bidegain, M. (2011). <em>Caracterización agroclimática del Uruguay 1980-2009</em> (Serie Técnica N.º 193). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2025-09/st-193-2011.pdf">https://www.inia.uy/sites/default/files/publications/2025-09/st-193-2011.pdf</a></li><li id="f13">Instituto Uruguayo de Meteorología. (s.f.-d). <em>WMO climatological standard normals 1991-2020: Uruguay, estaciones Salto (86360), Melilla (86575), Prado (86585) y Carrasco (86580)</em> (NCEI Accession 0253808, versión 2.2) [Conjunto de datos]. NOAA National Centers for Environmental Information. <a href="https://www.nodc.noaa.gov/archive/arc0216/0253808/2.2/data/0-data/Region-3-WMO-Normals-9120/Uruguay/CSV/">https://www.nodc.noaa.gov/archive/arc0216/0253808/2.2/data/0-data/Region-3-WMO-Normals-9120/Uruguay/CSV/</a></li><li id="f14">Rubio, L., Bernal, R., Arboleya, J. y Maeso, D. (2023). Alternativas para el manejo de patógenos de suelos en los sistemas hortícolas. En G. P. García-Inza, J. M. Paruelo y R. Zoppolo (Eds.), <em>Aportes científicos y tecnológicos del Instituto Nacional de Investigación Agropecuaria (INIA) del Uruguay a las trayectorias agroecológicas</em> (pp. 95–106). Ediciones CICCUS. <a href="https://inia.uy/sites/default/files/publications/2024-10/Rubio-L.-et.al-Capitulo-5.pdf">https://inia.uy/sites/default/files/publications/2024-10/Rubio-L.-et.al-Capitulo-5.pdf</a></li><li id="f15">Dirección General de la Granja, Facultad de Agronomía e Instituto Nacional de Investigación Agropecuaria. (2018). <em>Normas para la producción integrada de tomate bajo invernáculo: Zona Sur. Actualización 2018</em>. <a href="https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf">https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf</a></li><li id="f16">Giménez Martínez, G. J. y Silvera Brunetto, N. J. (2023). <em>Caracterización y selección de aislados de Clonostachys spp. para el control biológico del moho gris en tomate</em> [Trabajo final de grado, Universidad de la República]. <a href="http://tesis.fagro.edu.uy/index.php/tg/catalog/download/122/71/2063?inline=1">http://tesis.fagro.edu.uy/index.php/tg/catalog/download/122/71/2063?inline=1</a></li><li id="f17">Maeso, D., Paullier, J., González, P., Arboleya, J., Fernández, A. y Walasek, W. (2015b). Seguimiento de 'peste negra' en morrón: Experimentos en la zona sur de Uruguay. Ciclo 2013-2014. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 92–107). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li></ol><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('../sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>

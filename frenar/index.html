@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Cómo lo frenamos? | Invisibles y hambrientos</title>
+<meta name="description" content="Interactivo. El manejo integrado paso a paso, de la prevención al químico, con tres casos de Uruguay.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="../img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.casos legend { font-family: var(--titulos); font-weight: 650; }
+.plano { display: grid; gap: 24px; margin-top: 22px; }
+.piramide { max-width: 320px; width: 100%; margin: 0 auto; display: block; }
+.piramide polygon { fill: var(--papel); stroke: var(--carbon); stroke-width: 1.5; transition: fill .3s; }
+.piramide polygon.hecho { fill: var(--verde-claro); }
+.piramide polygon.ahora { fill: var(--verde); }
+.piramide polygon.salteado { fill: #EEF0EC; stroke-dasharray: 4 3; }
+.piramide text { font-family: var(--titulos); font-size: 12px; font-weight: 700; fill: var(--carbon); text-anchor: middle; }
+.piramide text.blanco { fill: #fff; }
+.pie-pir { font-size: .9rem; color: var(--apagado); text-align: center; margin-top: 6px; }
+.escalera { list-style: none; margin: 0; padding: 0; counter-reset: paso; }
+.escalera > li { position: relative; padding: 0 0 22px 52px; }
+.escalera > li::before {
+  counter-increment: paso; content: counter(paso); position: absolute; left: 0; top: 0;
+  width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+  font-family: var(--titulos); font-weight: 800; background: var(--papel); border: 2px solid var(--linea); color: var(--apagado);
+}
+.escalera > li::after { content: ""; position: absolute; left: 17px; top: 40px; bottom: 4px; width: 2px; background: var(--linea); }
+.escalera > li:last-child::after { display: none; }
+.escalera > li.activo::before, .escalera > li.listo::before { background: var(--verde); border-color: var(--verde); color: #fff; }
+.escalera > li.salteado::before { border-style: dashed; }
+.escalera h2 { font-size: 1.3rem; margin: 4px 0 .4rem; }
+.escalera > li.futuro h2, .escalera > li.salteado h2 { color: #8A949B; }
+.escalera .cuerpo p { font-size: 1.03rem; }
+.caso-txt { background: var(--verde-claro); border-radius: 12px; padding: 12px 14px 4px; margin: 0 0 12px; }
+.caso-txt b { font-family: var(--titulos); color: var(--verde-hondo); }
+.decide { display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 4px; }
+.respuesta { font-size: 1.02rem; margin-top: 10px; }
+.cierre { background: var(--papel); border: 2px solid var(--carbon); border-radius: 18px; padding: 18px; }
+.foto-paso { border-radius: 12px; margin: 4px 0 12px; max-height: 220px; width: 100%; object-fit: cover; }
+@media (min-width: 860px) {
+  .plano { grid-template-columns: 1.5fr 1fr; align-items: start; }
+  .lado { position: sticky; top: 16px; order: 2; }
+}
+</style>
+</head>
+<body>
+<header class="tope"><a class="volver" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a><span class="marca">Invisibles y hambrientos</span></header>
+<main id="contenido">
+
+
+<div class="envoltura ancha">
+  <header class="cabeza">
+    <span class="pagina">Página 9 del informe</span>
+    <h1>¿Cómo lo frenamos?</h1>
+    <p class="bajada">El manejo integrado combina medidas culturales, físicas, biológicas y químicas con el mínimo uso de plaguicidas. Se dibuja como una pirámide, con la prevención en la base y los plaguicidas arriba.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup></p>
+  </header>
+
+  <fieldset class="opciones casos" id="casos">
+    <legend>Elegí un caso</legend>
+    <label><input type="radio" name="caso" value="0" checked><span>Moho gris en tomate de invernáculo, norte</span></label>
+    <label><input type="radio" name="caso" value="1"><span>Peste negra en tomate y morrón</span></label>
+    <label><input type="radio" name="caso" value="2"><span>Mildiu en cebolla, sur</span></label>
+  </fieldset>
+
+  <div class="plano">
+    <aside class="lado" aria-label="Pirámide del manejo integrado">
+      <svg class="piramide" viewBox="0 0 300 220" aria-hidden="true">
+        <polygon data-n="4" points="150,6 190,58 110,58"/>
+        <polygon data-n="3" points="110,62 190,62 228,112 72,112"/>
+        <polygon data-n="2" points="72,116 228,116 266,166 34,166"/>
+        <polygon data-n="1" points="34,170 266,170 300,216 0,216"/>
+        <text data-n="4" x="150" y="46">Químico</text>
+        <text data-n="3" x="150" y="92">Físico y biológico</text>
+        <text data-n="2" x="150" y="146">Monitoreo y umbral</text>
+        <text data-n="1" x="150" y="198">Prevención</text>
+      </svg>
+      <p class="pie-pir">Pirámide basada en Stenberg.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup></p>
+    </aside>
+    <div>
+      <ol class="escalera" id="escalera"></ol>
+      <div id="cierre"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var RAIZ = "../";
+  var PASOS = [
+    { t: "Prevenir", nivel: 1,
+      g: "Primero se cambia el ambiente para que el patógeno no encuentre lo que necesita. Rotar, ventilar, usar plantín sano y variedades resistentes. En el sur se previene menos de lo que se podría. De 109 cultivos de tomate en invernáculo, el 37 % no rotaba ni solarizaba y apenas el 3 % hacía las dos cosas.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>",
+      c: ["Ventilar aunque haga fresco, deshojar y no regar tarde.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup> Usar plástico antigoteo.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>",
+          "Almácigo bajo malla y malezas controladas dentro y fuera del invernáculo.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup> En tomate, variedades con el gen Sw-5, como el híbrido uruguayo INIA Frontera.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a></sup>",
+          "Plantines sanos, rotar 2 años, destruir restos y cultivar INIA Colorada.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup> En el norte la siembra temprana hace que el mildiu golpee más, y la fecha la elige el productor.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup>"] },
+    { t: "Monitorear", nivel: 2,
+      g: "Mirar el cultivo seguido, antes de que el daño sea grande, y anotar lo que aparece.",
+      foto: [null, "foto-extra-trampa-amarilla.jpg", null],
+      c: ["Medir la humedad adentro del invernáculo. Las esporas del moho gris germinan con más de 90 %.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup> En Salto, más del 30 % del ciclo estuvo por encima de ese valor.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a></sup>",
+          "Contar trips en trampas. En un cultivo de Salto se llegaron a contar unos 30 por trampa por día, y entre 15 y 20 días después apareció mucha peste negra.<sup class='r'><a href='#f10' aria-label='Fuente 10'>10</a></sup>",
+          "Seguir el pronóstico. Desde 2012 la DIGEGRA avisaba por correo cuándo había riesgo de mildiu.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup> No pude confirmar si sigue funcionando."] },
+    { t: "Comparar con el umbral", nivel: 2,
+      g: "El umbral es el nivel de plaga o de enfermedad desde el que conviene actuar. La idea se definió en 1959 y es la base del manejo integrado.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup> Los plaguicidas solo entran si lo de abajo no mantiene el problema bajo el umbral.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>",
+      c: ["No encontré en las fuentes un umbral numérico para el moho gris. La señal más clara es la humedad de más de 90 %.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup>",
+          "Las plantas con síntomas se arrancan apenas aparecen.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup> En ese cultivo de Salto no se sacaron, y en uno o dos meses quedó totalmente afectado.<sup class='r'><a href='#f10' aria-label='Fuente 10'>10</a></sup>",
+          "INIA aconseja aplicar según el pronóstico de mildiu y no por calendario.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>"] },
+    { t: "Control físico y biológico", nivel: 3, decide: true,
+      g: "Si hace falta más, primero va lo que no es un plaguicida. La solarización tapa el suelo húmedo con plástico transparente en verano. En Las Violetas, Canelones, el suelo pasó los 60 °C a 5 cm de profundidad.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a></sup> También hay hongos e insectos que frenan a las plagas.",
+      foto: ["foto-extra-trichoderma.jpg", null, "foto-extra-solarizacion.jpg"],
+      c: ["En frutilla bajo invernáculo, el hongo Trichoderma harzianum bajó 50 % el moho gris. Junto con fungicidas, lo bajó entre 90 y 92 %.<sup class='r'><a href='#f13' aria-label='Fuente 13'>13</a></sup>",
+          "Arrancar las plantas enfermas y controlar malezas como la naranjilla, que guarda el virus entre un cultivo y otro.<sup class='r'><a href='#f10' aria-label='Fuente 10'>10</a>,<a href='#f5' aria-label='Fuente 5'>5</a></sup>",
+          "En almácigos de cebolla, solarizar bajó las plantas con nematodo del tallo de 74 % a 4 % en 2008.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a></sup> No encontré un control biológico del mildiu de la cebolla en las fuentes del informe."] },
+    { t: "Químico, como último recurso", nivel: 4, frac: true,
+      g: "Fijate en el buscador del MGAP que el producto esté registrado. Alterná grupos FRAC, el número de la etiqueta que junta a los fungicidas con el mismo modo de acción. Eso retrasa la resistencia, pero no la evita.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup> El benomilo salió en 1968 y en 1969 ya había hongos resistentes.<sup class='r'><a href='#f15' aria-label='Fuente 15'>15</a></sup>",
+      c: ["En Uruguay, el 72,4 % de 169 aislamientos de moho gris resistía al carbendazim.<sup class='r'><a href='#f16' aria-label='Fuente 16'>16</a></sup> En el norte, algunos productores aplican fungicidas dos o tres veces por semana.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup>",
+          "Para la peste negra, las fuentes ponen primero la malla, las malezas y arrancar plantas.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>",
+          "En cebolla, los fungicidas con riesgo de resistencia, solos, no deberían pasar de un tercio de las aplicaciones.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>"] }
+  ];
+
+  var caso = 0, actual = 0, salteo = false;
+  var esc = document.getElementById("escalera");
+  var cierre = document.getElementById("cierre");
+
+  function dibujar() {
+    esc.innerHTML = PASOS.map(function (p, i) {
+      var estado = i < actual ? "listo" : i === actual ? "activo" : (salteo && i === 4 ? "salteado" : "futuro");
+      var cuerpo = "";
+      if (i <= actual) {
+        cuerpo = '<div class="cuerpo"><p>' + p.g + "</p>" +
+          (p.foto && p.foto[caso] ? '<img class="foto-paso" src="' + RAIZ + "img/" + p.foto[caso] + '" alt="" loading="lazy">' : "") +
+          '<div class="caso-txt"><p><b>En este caso.</b> ' + p.c[caso] + "</p></div>";
+        if (i === actual && !salteo) {
+          if (p.decide) cuerpo += '<p><b>¿Con lo anterior el problema queda bajo el umbral?</b></p><div class="decide"><button class="boton claro" type="button" data-a="si">Sí, alcanza</button><button class="boton" type="button" data-a="no">No, sigue creciendo</button></div>';
+          else if (p.frac) cuerpo += '<p><b>Una prueba.</b> Tu fungicida y el del vecino tienen marcas distintas pero el mismo número FRAC. ¿Estás alternando?</p><div class="decide"><button class="boton claro" type="button" data-f="si">Sí</button><button class="boton claro" type="button" data-f="no">No</button></div><p class="respuesta" id="frac" aria-live="polite"></p>';
+          else cuerpo += '<div class="decide"><button class="boton" type="button" data-a="sig">Siguiente paso</button></div>';
+        }
+        cuerpo += "</div>";
+      }
+      return '<li class="' + estado + '"><h2>' + p.t + "</h2>" + cuerpo + "</li>";
+    }).join("");
+
+    var fin = salteo || (actual === 4 && hechoFrac);
+    cierre.innerHTML = fin ? '<div class="cierre"><h2>' + (salteo ? "No hizo falta el químico" : "Llegaste a la cima") + "</h2><p>" +
+      (salteo ? "Con prevención, monitoreo y control físico o biológico el problema quedó bajo el umbral. Esa es la idea del manejo integrado.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>" : "El químico entra último y rotando modos de acción. Abajo siguen trabajando la prevención y el monitoreo.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a>,<a href='#f14' aria-label='Fuente 14'>14</a></sup>") +
+      '</p><button class="boton claro" type="button" id="otro">Empezar de nuevo</button></div>' : "";
+    var otro = document.getElementById("otro");
+    if (otro) otro.addEventListener("click", function () { reiniciar(); window.scrollTo({ top: 0 }); });
+
+    document.querySelectorAll(".piramide polygon, .piramide text").forEach(function (e) {
+      var n = +e.dataset.n, nivel = PASOS[actual].nivel;
+      var cls = n === nivel ? "ahora" : n < nivel ? "hecho" : (salteo && n === 4 ? "salteado" : "");
+      if (e.tagName === "text") e.setAttribute("class", cls === "ahora" ? "blanco" : "");
+      else e.setAttribute("class", cls);
+    });
+
+    esc.querySelectorAll("[data-a]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (b.dataset.a === "si") salteo = true;
+        else actual++;
+        dibujar();
+        var li = esc.children[actual];
+        if (li) li.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+      });
+    });
+    esc.querySelectorAll("[data-f]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        hechoFrac = true;
+        var msj = (b.dataset.f === "no" ? "Exacto. " : "No. ") + "Mismo número FRAC quiere decir mismo modo de acción. Para alternar hay que cambiar de número.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup>";
+        dibujar();
+        document.getElementById("cierre").insertAdjacentHTML("afterbegin", '<p class="respuesta">' + msj + "</p>");
+      });
+    });
+  }
+  var hechoFrac = false;
+  function reiniciar() { actual = 0; salteo = false; hechoFrac = false; dibujar(); }
+  document.querySelectorAll("input[name=caso]").forEach(function (r) { r.addEventListener("change", function () { caso = +r.value; reiniciar(); }); });
+  dibujar();
+})();
+</script>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h2 id="fuentes">Fuentes</h2><ol><li id="f1">Stenberg, J. A. (2017). A conceptual framework for integrated pest management. <em>Trends in Plant Science, 22</em>(9), 759–769. <a href="https://doi.org/10.1016/j.tplants.2017.06.010">https://doi.org/10.1016/j.tplants.2017.06.010</a></li><li id="f2">Bertoni, P., Scarlato, M., Berrueta, C. y Dogliotti, S. (2020). Producción de tomate en invernáculo en el sur de Uruguay: Distintos escenarios para la sostenibilidad ambiental. <em>Revista INIA</em>(61), 77–80. <a href="https://inia.uy/sites/default/files/publications/2024-10/Revista-INIA-61-Junio-2020.pdf">https://inia.uy/sites/default/files/publications/2024-10/Revista-INIA-61-Junio-2020.pdf</a></li><li id="f3">Bernal, R. (2010). <em>Enfermedades de tomate (Lycopersicum esculentum Mill.) en invernadero en las zonas de Salto y Bella Unión</em> (Serie Técnica N.º 181). INIA. <a href="https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf">https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf</a></li><li id="f4">Dirección General de la Granja, Facultad de Agronomía e Instituto Nacional de Investigación Agropecuaria. (2018). <em>Normas para la producción integrada de tomate bajo invernáculo: Zona Sur. Actualización 2018</em>. <a href="https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf">https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf</a></li><li id="f5">Maeso, D., Paullier, J., González, P., Arboleya, J., Fernández, A. y Walasek, W. (2015b). Seguimiento de 'peste negra' en morrón: Experimentos en la zona sur de Uruguay. Ciclo 2013-2014. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 92–107). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li><li id="f6">González-Arcos, M., Manzzioni, A., Arruabarrena, A., Lado, J., Laxague, J. I., Vicente, E., Giambiasi, M., Moltini, A. I., Lenzi, A. y Giménez, G. (2019). <em>Cultivar híbrido de tomate 'INIA Frontera' (HT72)</em> (Hoja de Divulgación N.º 110). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/HD-110-Tomate-octubre-2019.pdf">https://inia.uy/sites/default/files/publications/2024-10/HD-110-Tomate-octubre-2019.pdf</a></li><li id="f7">Arboleya, J., Maeso, D., Campelo, E., Paullier, J. y Giménez, G. (Eds.). (2013). <em>Producción integrada de cebolla</em> (Boletín de Divulgación N.º 105). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-06/bd-105-2013.pdf">https://www.inia.uy/sites/default/files/publications/2024-06/bd-105-2013.pdf</a></li><li id="f8">Vicente, E., Carrega, G., Manzzioni, A., Vilaró, F. y Rodríguez, G. (2007). <em>El cultivar de cebolla INIA Casera</em> (Boletín de Divulgación N.º 92). INIA. <a href="https://inia.uy/sites/default/files/publications/2025-11/bd-92-2007.pdf">https://inia.uy/sites/default/files/publications/2025-11/bd-92-2007.pdf</a></li><li id="f9">Inetti Volpi, C. S. (2018). <em>Análisis y jerarquización de factores determinantes del rendimiento del cultivo de tomate bajo invernáculo en la zona de Salto</em> [Tesis de grado, Universidad de la República]. Colibri. <a href="https://www.colibri.udelar.edu.uy/server/api/core/bitstreams/e5299935-8f67-4019-8628-9eb94badb5c3/content">https://www.colibri.udelar.edu.uy/server/api/core/bitstreams/e5299935-8f67-4019-8628-9eb94badb5c3/content</a></li><li id="f10">Rubio, L., Amaral, J., González, M., Arruabarrena, A. y Maeso, D. (2014b). Situación actual del virus de la "peste negra" en los cultivos de pimiento del norte del país. En <em>Avances de investigación: Protección vegetal en tomate y morrón</em> (Serie Actividades de Difusión N.º 740, pp. 2–13). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf">https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf</a></li><li id="f11">Stern, V. M., Smith, R. F., van den Bosch, R. y Hagen, K. S. (1959). The integration of chemical and biological control of the spotted alfalfa aphid: The integrated control concept. <em>Hilgardia, 29</em>(2), 81–101. <a href="https://doi.org/10.3733/hilg.v29n02p081">https://doi.org/10.3733/hilg.v29n02p081</a></li><li id="f12">Arboleya, J. (Ed.). (2018). <em>Solarización: Una técnica de manejo integrado de malezas y plagas en horticultura</em> (Serie Técnica N.º 245). INIA. <a href="https://doi.org/10.35676/INIA/ST.245">https://doi.org/10.35676/INIA/ST.245</a></li><li id="f13">Barakat, R. y Al-Masri, M. I. (2017). Effect of Trichoderma harzianum in combination with fungicides in controlling gray mould disease (Botrytis cinerea) of strawberry. <em>American Journal of Plant Sciences, 8</em>(4), 651–665. <a href="https://doi.org/10.4236/ajps.2017.84045">https://doi.org/10.4236/ajps.2017.84045</a></li><li id="f14">Brent, K. J. y Hollomon, D. W. (2007). <em>Fungicide resistance in crop pathogens: How can it be managed?</em> (2.ª ed. rev.; FRAC Monograph N.º 1). Fungicide Resistance Action Committee; CropLife International. <a href="https://www.frac.info/media/jtafagre/monograph-1.pdf">https://www.frac.info/media/jtafagre/monograph-1.pdf</a></li><li id="f15">Morton, V. y Staub, T. (2008). A short history of fungicides. <em>APSnet Features</em>. <a href="https://doi.org/10.1094/APSnetFeature-2008-0308">https://doi.org/10.1094/APSnetFeature-2008-0308</a></li><li id="f16">Gepp, V., Vero, S., Cassanello, M. E., Romero, G., Silvera, E., González, P., Rebellato, J., Ferreira, Y. y Bentancur, O. (2012). Resistencia a fungicidas en Botrytis cinerea en el Uruguay. <em>Agrociencia Uruguay, 16</em>(1), 97–107. <a href="https://doi.org/10.31285/AGRO.16.572">https://doi.org/10.31285/AGRO.16.572</a></li></ol><h3>Fotos</h3><ul><li><b>Solarización</b>. Foto de Gerald Holmes, Strawberry Center, Cal Poly San Luis Obispo, Bugwood.org, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/1571379">IPM Images</a>.</li><li><b>Trampa amarilla</b>. Foto de Rachel McCarthy, Bugwood.org, <a href="https://creativecommons.org/licenses/by-nc/3.0/us/">CC BY-NC 3.0 US</a>, vía <a href="https://www.ipmimages.org/browse/image/5458344">IPM Images</a>.</li><li><b>Trichoderma</b>. Foto de Vicenny, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, vía <a href="https://commons.wikimedia.org/wiki/File:Trichoderma_asperellum.jpg">Wikimedia Commons</a>.</li></ul><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('../sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>

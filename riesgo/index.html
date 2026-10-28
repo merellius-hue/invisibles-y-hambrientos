@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Tu cultivo está en riesgo? | Invisibles y hambrientos</title>
+<meta name="description" content="Chequeo interactivo de diez preguntas de sí o no sobre las condiciones que favorecen las enfermedades de las hortalizas, con qué hacer.">
+<meta name="theme-color" content="#3A7D44">
+<link rel="icon" href="../img/icono.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&amp;family=Archivo:wdth,wght@62..125,400..800&amp;display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.preguntas { list-style: none; margin: 0; padding: 0; counter-reset: q; }
+.preg { background: var(--papel); border: 1px solid var(--linea); border-radius: 16px; padding: 16px 16px 12px; margin-bottom: 12px; }
+.preg.si { border-color: var(--terra); }
+.preg h2 { font-family: var(--texto); font-stretch: normal; font-weight: 500; font-size: 1.15rem; line-height: 1.4; letter-spacing: 0; margin: 0 0 .7rem; display: flex; gap: 10px; }
+.preg h2::before { counter-increment: q; content: counter(q); font-family: var(--titulos); font-weight: 800; color: var(--verde-hondo); min-width: 1.3em; }
+.sino { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; border: 0; margin: 0; padding: 0; }
+.sino label { position: relative; }
+.sino input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.sino span { display: flex; justify-content: center; align-items: center; min-height: 48px; border-radius: 12px; border: 2px solid var(--linea); font-family: var(--titulos); font-weight: 700; font-size: 1.05rem; cursor: pointer; background: var(--papel); }
+.sino input:checked + span.s { background: var(--terra); border-color: var(--terra); color: #fff; }
+.sino input:checked + span.n { background: var(--verde); border-color: var(--verde); color: #fff; }
+.sino input:focus-visible + span { outline: 3px solid var(--foco); outline-offset: 2px; }
+.detalle { margin-top: 12px; font-size: 1rem; }
+.detalle p { margin-bottom: .5rem; }
+.detalle b { font-family: var(--titulos); }
+.resultado { position: sticky; bottom: 0; background: var(--carbon); color: #fff; border-radius: 16px 16px 0 0; padding: 12px 16px; margin-top: 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-family: var(--titulos); z-index: 5; }
+.resultado b { font-size: 1.6rem; }
+.resultado a { color: #fff; font-weight: 700; }
+.informe { background: var(--papel); border: 2px solid var(--carbon); border-radius: 18px; padding: 20px 18px 8px; margin-top: 24px; }
+.nivel { font-family: var(--titulos); font-weight: 800; font-stretch: 75%; font-size: clamp(2rem, 9vw, 3rem); line-height: 1; margin-bottom: .4rem; }
+.informe ul { padding-left: 1.2em; font-size: 1rem; }
+.informe li { margin-bottom: .45rem; }
+.medidor { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin: 10px 0 14px; }
+.medidor i { height: 12px; border-radius: 3px; background: var(--linea); }
+.medidor i.on { background: var(--terra); }
+.medidor i.no { background: var(--verde-claro); }
+</style>
+</head>
+<body>
+<header class="tope"><a class="volver" href="../index.html"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Volver al inicio</a><span class="marca">Invisibles y hambrientos</span></header>
+<main id="contenido">
+
+
+<div class="envoltura">
+  <header class="cabeza">
+    <span class="pagina">Página 11 del informe</span>
+    <h1>¿Tu cultivo está en riesgo?</h1>
+    <p class="bajada">Diez preguntas de sí o no. Cada sí marca algo del ambiente o del manejo que podés cambiar.</p>
+  </header>
+  <p class="aviso">Armé este chequeo con las condiciones que las fuentes asocian a cada enfermedad. No es un diagnóstico. Un sí no quiere decir que la enfermedad esté, sino que el ambiente la favorece. Si una planta tiene síntomas que no reconocés, consultá a un técnico antes de aplicar nada.</p>
+
+  <form id="chequeo" onsubmit="return false">
+    <ol class="preguntas" id="preguntas"></ol>
+  </form>
+  <div class="resultado" id="barra-res"><span><b id="cuenta">0</b> sí de <span id="respondidas">0</span> respondidas</span><a href="#informe">Ver resultado</a></div>
+  <section class="informe" id="informe" aria-live="polite"></section>
+  <p class="margen">Las preguntas sirven igual para una huerta familiar que para un invernáculo comercial. Cambian los metros, no los vértices.</p>
+</div>
+
+<script>
+(function () {
+  var Q = [
+    ["¿El invernáculo queda cerrado de noche y amanece con más de 90 % de humedad durante horas?", "Moho gris. Sus esporas necesitan más de 90 % de humedad relativa para germinar.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>", "Ventilar, deshojar y no regar tarde.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup> En días muy lluviosos, ventilar todo el tiempo puede subir la humedad.<sup class='r'><a href='#f2' aria-label='Fuente 2'>2</a></sup>"],
+    ["¿Tus zapallos, pepinos o melones amanecen con la hoja mojada 2 horas o más, con unos 15 °C?", "Mildiu de las cucurbitáceas. Con mucho inóculo, eso alcanza para infectar.<sup class='r'><a href='#f3' aria-label='Fuente 3'>3</a></sup>", "Canteros altos, ventilación, nada de aspersión y lejos de cultivos ya plantados.<sup class='r'><a href='#f4' aria-label='Fuente 4'>4</a></sup>"],
+    ["¿Plantás tomate o morrón en el mismo suelo año tras año?", "Enfermedades de suelo y nematodos, que aumentaron con el uso intensivo del suelo bajo plástico.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup>", "Solarizar entre mediados de diciembre y fines de enero.<sup class='r'><a href='#f5' aria-label='Fuente 5'>5</a></sup> Si usás tomate con el gen Mi, tené en cuenta que falla con el suelo a más de 28 °C.<sup class='r'><a href='#f6' aria-label='Fuente 6'>6</a></sup>"],
+    ["¿Hacés los plantines sin malla antiinsectos?", "Peste negra. En Canelones la infección apareció primero en plantas de almácigos sin malla.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>", "Almácigo bajo malla y arrancar las plantas con síntomas.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>"],
+    ["¿Hay naranjilla, correhuela, cerraja o verdolaga alrededor del cultivo?", "Peste negra. Son malezas que pueden guardar el virus entre un cultivo y otro.<sup class='r'><a href='#f8' aria-label='Fuente 8'>8</a></sup>", "Controlar las malezas dentro y fuera del invernáculo.<sup class='r'><a href='#f7' aria-label='Fuente 7'>7</a></sup>"],
+    ["¿Tenés tomate en otoño o invierno con menos de 18 °C y agua sobre las hojas?", "Tizón tardío.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a></sup>", "Las normas de producción integrada indican tratar en forma preventiva en esas condiciones.<sup class='r'><a href='#f9' aria-label='Fuente 9'>9</a></sup> No regar por aspersión.<sup class='r'><a href='#f10' aria-label='Fuente 10'>10</a></sup>"],
+    ["¿Regás por aspersión el tomate a campo en un verano lluvioso?", "Mancha bacteriana. Con 100 % de humedad durante 24 horas y 23 a 35 °C tiene lo que necesita.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>", "Regar sin mojar las hojas, no tocar plantas mojadas y usar cobre preventivo.<sup class='r'><a href='#f1' aria-label='Fuente 1'>1</a></sup>"],
+    ["¿Desbrotás o deshojás con la misma tijera sin desinfectarla?", "Cancro bacteriano. En un ensayo de INIA, con un desinfectante a base de iodo enfermó más del 85 % de las plantas, igual que sin desinfectar.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup>", "Tijera con hipoclorito al 1 % de cloro activo, que en ese ensayo evitó los síntomas.<sup class='r'><a href='#f11' aria-label='Fuente 11'>11</a></sup>"],
+    ["¿Tu almácigo está en suelo muy húmedo y fresco, en otoño o invierno?", "Damping-off. Pythium ataca más en esa época, con el suelo muy húmedo cerca de 18 °C.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a></sup>", "Desinfectar el suelo del almácigo con vapor a 83 °C durante 30 minutos.<sup class='r'><a href='#f12' aria-label='Fuente 12'>12</a></sup>"],
+    ["¿Aplicás siempre el mismo fungicida, o marcas distintas con el mismo grupo FRAC?", "Resistencia. El 72,4 % de 169 aislamientos uruguayos de moho gris ya resistía al carbendazim.<sup class='r'><a href='#f13' aria-label='Fuente 13'>13</a></sup>", "Alternar grupos FRAC distintos y sumar métodos que no sean químicos.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup>"]
+  ];
+  var ol = document.getElementById("preguntas");
+  ol.innerHTML = Q.map(function (q, i) {
+    return '<li class="preg" id="p' + i + '"><h2 id="t' + i + '">' + q[0] + '</h2><fieldset class="sino" aria-labelledby="t' + i + '">' +
+      '<label><input type="radio" name="q' + i + '" value="si"><span class="s">Sí</span></label>' +
+      '<label><input type="radio" name="q' + i + '" value="no"><span class="n">No</span></label></fieldset>' +
+      '<div class="detalle" id="d' + i + '" hidden><p><b>Qué favorece.</b> ' + q[1] + '</p><p><b>Qué hacer.</b> ' + q[2] + "</p></div></li>";
+  }).join("");
+
+  function actualizar() {
+    var si = [], resp = 0, marcas = "";
+    Q.forEach(function (q, i) {
+      var v = (document.querySelector("input[name=q" + i + "]:checked") || {}).value;
+      if (v) resp++;
+      if (v === "si") si.push(i);
+      document.getElementById("d" + i).hidden = v !== "si";
+      document.getElementById("p" + i).classList.toggle("si", v === "si");
+      marcas += '<i class="' + (v === "si" ? "on" : v === "no" ? "no" : "") + '"></i>';
+    });
+    document.getElementById("cuenta").textContent = si.length;
+    document.getElementById("respondidas").textContent = resp;
+    var nivel, txt;
+    if (resp === 0) { nivel = "Todavía sin respuestas"; txt = "Respondé las preguntas de arriba. El resultado se arma solo."; }
+    else if (si.length === 0) { nivel = "Ningún sí"; txt = "Según este chequeo, lo que respondiste no favorece a estas enfermedades. Igual conviene mirar el cultivo seguido."; }
+    else if (si.length <= 2) { nivel = "Pocos puntos para mirar"; txt = "Hay algo para cambiar, y casi siempre depende de vos."; }
+    else if (si.length <= 5) { nivel = "Varios puntos para mirar"; txt = "Varias condiciones favorecen enfermedades. Empezá por lo que depende de vos, ventilar, rotar, regar distinto o cambiar el almácigo."; }
+    else { nivel = "Muchos puntos para mirar"; txt = "Muchas condiciones favorecen enfermedades. Empezá por lo que depende de vos, ventilar, rotar, regar distinto o cambiar el almácigo, y consultá a un técnico."; }
+    document.getElementById("informe").innerHTML = '<h2 class="oculto-visual">Resultado</h2><p class="nivel">' + nivel + '</p><div class="medidor" aria-hidden="true">' + marcas + "</div><p>" + txt + "</p>" +
+      (si.length ? "<p><b>Qué hacer.</b></p><ul>" + si.map(function (i) { return "<li>" + Q[i][2] + "</li>"; }).join("") + "</ul>" : "") +
+      (resp ? "<p>Antes de comprar o aplicar un producto, fijate en el buscador del MGAP que esté registrado, y alterná grupos FRAC.<sup class='r'><a href='#f14' aria-label='Fuente 14'>14</a></sup></p>" : "");
+  }
+  document.getElementById("chequeo").addEventListener("change", actualizar);
+  actualizar();
+})();
+</script>
+
+</main>
+<footer class="pie-fuentes"><div class="envoltura"><h2 id="fuentes">Fuentes</h2><ol><li id="f1">Bernal, R. (2010). <em>Enfermedades de tomate (Lycopersicum esculentum Mill.) en invernadero en las zonas de Salto y Bella Unión</em> (Serie Técnica N.º 181). INIA. <a href="https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf">https://ainfo.inia.uy/digital/bitstream/item/2920/1/18429230710110412.pdf</a></li><li id="f2">Baptista, F. J. F. (2007). <em>Modelling the climate in unheated tomato greenhouses and predicting Botrytis cinerea infection</em> [Tesis doctoral, Universidade de Évora]. <a href="https://dspace.uevora.pt/rdpc/bitstream/10174/1724/1/PhD%20Thesis_FBaptista2007.pdf">https://dspace.uevora.pt/rdpc/bitstream/10174/1724/1/PhD%20Thesis_FBaptista2007.pdf</a></li><li id="f3">Savory, E. A., Granke, L. L., Quesada-Ocampo, L. M., Varbanova, M., Hausbeck, M. K. y Day, B. (2011). The cucurbit downy mildew pathogen Pseudoperonospora cubensis. <em>Molecular Plant Pathology, 12</em>(3), 217–226. <a href="https://doi.org/10.1111/j.1364-3703.2010.00670.x">https://doi.org/10.1111/j.1364-3703.2010.00670.x</a></li><li id="f4">Cassanello Costabel, M. E., Núñez Milán, C. A. y Scattolini Rimada, Á. (2006). <em>Enfermedades de las cucurbitáceas en el Litoral Norte de Uruguay</em>. Facultad de Agronomía, Universidad de la República. <a href="https://www.colibri.udelar.edu.uy/items/48ccbd6d-a868-439b-9d42-9a07867cf702">https://www.colibri.udelar.edu.uy/items/48ccbd6d-a868-439b-9d42-9a07867cf702</a></li><li id="f5">Rubio, L., Bernal, R., Arboleya, J. y Maeso, D. (2023). Alternativas para el manejo de patógenos de suelos en los sistemas hortícolas. En G. P. García-Inza, J. M. Paruelo y R. Zoppolo (Eds.), <em>Aportes científicos y tecnológicos del Instituto Nacional de Investigación Agropecuaria (INIA) del Uruguay a las trayectorias agroecológicas</em> (pp. 95–106). Ediciones CICCUS. <a href="https://inia.uy/sites/default/files/publications/2024-10/Rubio-L.-et.al-Capitulo-5.pdf">https://inia.uy/sites/default/files/publications/2024-10/Rubio-L.-et.al-Capitulo-5.pdf</a></li><li id="f6">González-Arcos, M., Manzzioni, A., Arruabarrena, A., Lado, J., Laxague, J. I., Vicente, E., Giambiasi, M., Moltini, A. I., Lenzi, A. y Giménez, G. (2019). <em>Cultivar híbrido de tomate 'INIA Frontera' (HT72)</em> (Hoja de Divulgación N.º 110). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/HD-110-Tomate-octubre-2019.pdf">https://inia.uy/sites/default/files/publications/2024-10/HD-110-Tomate-octubre-2019.pdf</a></li><li id="f7">Maeso, D., Paullier, J., González, P., Arboleya, J., Fernández, A. y Walasek, W. (2015b). Seguimiento de 'peste negra' en morrón: Experimentos en la zona sur de Uruguay. Ciclo 2013-2014. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 92–107). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li><li id="f8">Rubio, L., Amaral, J., González, M., Arruabarrena, A. y Maeso, D. (2014b). Situación actual del virus de la "peste negra" en los cultivos de pimiento del norte del país. En <em>Avances de investigación: Protección vegetal en tomate y morrón</em> (Serie Actividades de Difusión N.º 740, pp. 2–13). INIA. <a href="https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf">https://www.inia.uy/sites/default/files/publications/2024-10/SAD-740-Avances-de-Investigacion-Proteccion-Vegetal-en-Tomate-y-Morron.pdf</a></li><li id="f9">Dirección General de la Granja, Facultad de Agronomía e Instituto Nacional de Investigación Agropecuaria. (2018). <em>Normas para la producción integrada de tomate bajo invernáculo: Zona Sur. Actualización 2018</em>. <a href="https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf">https://inia.uy/sites/default/files/publications/2024-10/Norma-PI-TOMATE-invernaculo-Sur-actualizacion-2018.pdf</a></li><li id="f10">Ristaino, J., Schumann, G. L. y D'Arcy, C. J. (2000). Late blight of potato and tomato. <em>The Plant Health Instructor</em>. <a href="https://doi.org/10.1094/PHI-I-2000-0724-01">https://doi.org/10.1094/PHI-I-2000-0724-01</a></li><li id="f11">Maeso, D., Walasek, W. y Fernández, A. (2015a). Evaluación de desinfectantes para prevenir la trasmisión de Clavibacter michiganensis subsp. michiganensis en tomate mediante tijeras de poda. En <em>Resultados experimentales en sanidad de tomate y morrón</em> (Serie Actividades de Difusión N.º 756, pp. 24–31). INIA. <a href="https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf">https://inia.uy/sites/default/files/publications/2024-10/SAD-756-Sanidad-Tomate-Morron.pdf</a></li><li id="f12">Lasa, C. I. y Smith, L. R. (1981). <em>Damping-off, descripción y control</em> (Miscelánea 32). Centro de Investigaciones Agrícolas Alberto Boerger. <a href="https://www.inia.uy/sites/default/files/publications/2024-10/CIAAB-Miscelanea-32-1981.pdf">https://www.inia.uy/sites/default/files/publications/2024-10/CIAAB-Miscelanea-32-1981.pdf</a></li><li id="f13">Gepp, V., Vero, S., Cassanello, M. E., Romero, G., Silvera, E., González, P., Rebellato, J., Ferreira, Y. y Bentancur, O. (2012). Resistencia a fungicidas en Botrytis cinerea en el Uruguay. <em>Agrociencia Uruguay, 16</em>(1), 97–107. <a href="https://doi.org/10.31285/AGRO.16.572">https://doi.org/10.31285/AGRO.16.572</a></li><li id="f14">Brent, K. J. y Hollomon, D. W. (2007). <em>Fungicide resistance in crop pathogens: How can it be managed?</em> (2.ª ed. rev.; FRAC Monograph N.º 1). Fungicide Resistance Action Committee; CropLife International. <a href="https://www.frac.info/media/jtafagre/monograph-1.pdf">https://www.frac.info/media/jtafagre/monograph-1.pdf</a></li></ol><p class="firma">Material propio del informe de Joaquín Merello Silva, Escuela Agraria Florida, 2026. Profesor Ing. Agr. Daniel Alanis.</p></div></footer>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  navigator.serviceWorker.register('../sw.js').then(function () { return navigator.serviceWorker.ready; }).then(function () {
+    if (!window.caches) return;
+    var urls = [location.href.split('#')[0]];
+    document.querySelectorAll('img[src], link[rel=stylesheet]').forEach(function (e) {
+      var u = e.src || e.href;
+      if (u.indexOf(location.origin) === 0) urls.push(u);
+    });
+    caches.open('iyh-v1').then(function (c) { urls.forEach(function (u) { c.add(u).catch(function () {}); }); });
+  }).catch(function () {});
+}
+</script>
+</body>
+</html>
